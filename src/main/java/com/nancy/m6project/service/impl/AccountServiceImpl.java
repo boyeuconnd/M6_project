@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AccountServiceServiceImpl implements AccountService, UserDetailsService {
+public class AccountServiceImpl implements AccountService, UserDetailsService {
 
     @Autowired
     private AccountRepositories accountRepositories;
