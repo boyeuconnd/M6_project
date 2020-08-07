@@ -10,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")
+//@RequestMapping("api")
 public class AccountApiController {
     @Autowired
     private JwtUntil jwtUntil;
@@ -21,25 +21,26 @@ public class AccountApiController {
     @Autowired
     private AccountServiceImpl accountService;
 
-    @GetMapping("")
+    @GetMapping("/api/account")
     public Iterable<Accounts> getAll(){
         return accountService.findAll();
     }
 
 //    @PostMapping("/login")
 //    public
-    @PostMapping("/authen")
+    @PostMapping("/login")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
+        String message = "";
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                             authRequest.getPassword())
             );
-
+            message = jwtUntil.generateToken(authRequest.getEmail());
         }catch (Exception ex){
-            throw new Exception("Invalid Email or password");
+            message = "Invalid Email or password";
         }
-        return jwtUntil.generateToken(authRequest.getEmail());
+        return message;
     }
 
 

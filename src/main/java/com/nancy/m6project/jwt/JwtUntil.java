@@ -1,8 +1,6 @@
 package com.nancy.m6project.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 @Service
 public class JwtUntil {
@@ -59,7 +58,17 @@ public class JwtUntil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try{
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }catch (MalformedJwtException malEx){
+            Logger.getLogger("Invalid JWT token");
+        }catch (ExpiredJwtException exJwt){
+            Logger.getLogger("Expired JWT token");
+        }catch (UnsupportedJwtException unJwt){
+            Logger.getLogger("Unsupported JWT token");
+        }
+        return false;
+
     }
 }
