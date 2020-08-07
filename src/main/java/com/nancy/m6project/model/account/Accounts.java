@@ -1,9 +1,13 @@
 package com.nancy.m6project.model.account;
 
+import com.nancy.m6project.model.status.Comment;
+import com.nancy.m6project.model.status.Status;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -13,27 +17,28 @@ public class Accounts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Basic
+
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Basic
     @Column(nullable = false)
     private String name;
 
-    @Basic
     @Column(nullable = false)
     private String password;
 
-    @Basic
     private String address;
 
-    @Basic
-    private String phoneNumber;
+    private Long phoneNumber;
 
     private Date dateOfBirth;
 
     @ManyToOne
-    @JoinColumn
     private Gender gender;
+
+    @OneToMany
+    private Set<Comment> comment;
+
+    @OneToMany
+    private Set<Status> status;
 }
