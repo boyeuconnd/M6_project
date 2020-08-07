@@ -3,6 +3,7 @@ package com.nancy.m6project.model.account;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -12,9 +13,27 @@ public class Accounts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false,unique = true)
+    @Basic
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Basic
+    @Column(nullable = false)
+    private String name;
+
+    @Basic
     @Column(nullable = false)
     private String password;
+
+    @Basic
+    private String address;
+
+    @Basic
+    private String phoneNumber;
+
+    private Date dateOfBirth;
+
+    @ManyToOne
+    @JoinColumn
+    private Gender gender;
 }
