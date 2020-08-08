@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -46,20 +47,19 @@ public class AccountApiController {
     }
 
     @PostMapping("/register")
-    public String saveAccount(@ModelAttribute Accounts accounts){
+    public String saveAccount(@RequestBody Accounts accounts)throws Exception{
         String message = "";
         Accounts account = accountService.findUsersByEmail(accounts.getEmail());
-        if (accounts.getEmail() != null || account.getEmail() != null && !accounts.getEmail().equals(account.getEmail())){
-            accountService.save(accounts);
-            message = "Sign Up success !!!";
-        }else {
-            message = "Email already exists";
-        }
+       try {
+           if (account == null || !accounts.getEmail().equals(account.getEmail()) ){
+               accountService.save(accounts);
+               message = "Đăng ký thành công !!!";
+           }else {
+               message = "Email đã tồn tại !" ;
+           }
+       }catch (Exception e){
+           message = "Lỗi email hoặc mật khẩu chưa nhập !";
+       }
         return message;
     }
-
-//    @GetMapping("/random")
-//    public Random randomStuff(){
-//        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
-//    }
 }

@@ -11,5 +11,4 @@ public interface AccountService {
 
     Accounts findUsersByEmail(String email);
 
-    Accounts save(Accounts accounts);
 }
