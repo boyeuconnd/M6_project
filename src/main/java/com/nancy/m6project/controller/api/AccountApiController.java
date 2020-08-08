@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 //@RequestMapping("api")
@@ -43,5 +45,21 @@ public class AccountApiController {
         return message;
     }
 
+    @PostMapping("/register")
+    public String saveAccount(@ModelAttribute Accounts accounts){
+        String message = "";
+        Accounts account = accountService.findUsersByEmail(accounts.getEmail());
+        if (accounts.getEmail() != null || account.getEmail() != null && !accounts.getEmail().equals(account.getEmail())){
+            accountService.save(accounts);
+            message = "Sign Up success !!!";
+        }else {
+            message = "Email already exists";
+        }
+        return message;
+    }
 
+//    @GetMapping("/random")
+//    public Random randomStuff(){
+//        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
+//    }
 }

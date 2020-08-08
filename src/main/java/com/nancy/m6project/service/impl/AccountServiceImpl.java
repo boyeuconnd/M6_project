@@ -43,4 +43,9 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 //        rolelist.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return new User(accounts.getEmail(),accounts.getPassword(),rolelist);
     }
+
+    @Override
+    public Accounts save(Accounts accounts){
+        return accountRepositories.save(accounts);
+    }
 }

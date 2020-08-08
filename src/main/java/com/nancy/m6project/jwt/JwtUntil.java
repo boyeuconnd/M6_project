@@ -2,7 +2,6 @@ package com.nancy.m6project.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

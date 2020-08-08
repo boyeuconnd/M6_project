@@ -9,4 +9,6 @@ public interface AccountService {
     Accounts findOne(Long id);
 
     Accounts findUsersByEmail(String email);
+
+    Accounts save(Accounts accounts);
 }
