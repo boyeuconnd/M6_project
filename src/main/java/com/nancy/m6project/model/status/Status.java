@@ -1,7 +1,7 @@
 package com.nancy.m6project.model.status;
 
 import com.nancy.m6project.model.account.Accounts;
-import lombok.Data;
+import lombok.*;
 import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
