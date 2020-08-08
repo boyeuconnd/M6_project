@@ -1,6 +1,7 @@
 package com.nancy.m6project.model.status;
 
 import com.nancy.m6project.model.account.Account;
+import com.nancy.m6project.model.comment.Comment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(name = "status")
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,12 +21,14 @@ public class Status {
 
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
+    @Transient
     private int like = 0;
 
     @OneToMany
     private Set<Comment> comments;
 
     @ManyToOne
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Account account;
 
 }
