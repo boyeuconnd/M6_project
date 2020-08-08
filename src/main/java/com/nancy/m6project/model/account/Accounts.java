@@ -2,7 +2,7 @@ package com.nancy.m6project.model.account;
 
 import com.nancy.m6project.model.status.Comment;
 import com.nancy.m6project.model.status.Status;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;

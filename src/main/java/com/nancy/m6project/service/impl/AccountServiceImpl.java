@@ -22,6 +22,11 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     private AccountRepositories accountRepositories;
 
     @Override
+    public Accounts save(Accounts accounts) {
+        return accountRepositories.save( accounts);
+    }
+
+    @Override
     public Iterable<Accounts> findAll() {
         return accountRepositories.findAll();
     }
