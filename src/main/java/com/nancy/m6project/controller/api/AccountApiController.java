@@ -33,8 +33,7 @@ public class AccountApiController {
         return accountService.findAll();
     }
 
-//    @PostMapping("/login")
-//    public
+
     @PostMapping("/login")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
         String message = "";
