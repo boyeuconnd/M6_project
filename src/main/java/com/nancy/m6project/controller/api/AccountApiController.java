@@ -50,13 +50,13 @@ public class AccountApiController {
     }
 
     @PostMapping("/register")
-    public String saveAccount(@RequestBody Accounts accounts)throws Exception{
+    public String saveAccount(@RequestBody Accounts newAccounts){
         String message = "";
-        Accounts account = accountService.findUsersByEmail(accounts.getEmail());
+        Accounts existAccount = accountService.findUsersByEmail(newAccounts.getEmail());
        try {
-           if (account == null || !accounts.getEmail().equals(account.getEmail()) ){
-               accounts.setPassword(passwordEncoder.encode(accounts.getPassword()));
-               accountService.save(accounts);
+           if (existAccount == null || !newAccounts.getEmail().equals(existAccount.getEmail()) ){
+               newAccounts.setPassword(passwordEncoder.encode(newAccounts.getPassword()));
+               accountService.save(newAccounts);
                message = "Đăng ký thành công !!!";
            }else {
                message = "Email đã tồn tại !" ;
