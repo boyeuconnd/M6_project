@@ -1,6 +1,6 @@
 package com.nancy.m6project.model.status;
 
-import com.nancy.m6project.model.account.Accounts;
+import com.nancy.m6project.model.account.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,5 +19,5 @@ public class Comment {
     private Status status;
 
     @ManyToOne
-    private Accounts accounts;
+    private Account account;
 }

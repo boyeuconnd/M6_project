@@ -1,7 +1,7 @@
 package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.jwt.JwtUntil;
-import com.nancy.m6project.model.account.Accounts;
+import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.AuthRequest;
 import com.nancy.m6project.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 @RestController
 //@RequestMapping("api")
@@ -29,7 +26,7 @@ public class AccountApiController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/account")
-    public Iterable<Accounts> getAll(){
+    public Iterable<Account> getAll(){
         return accountService.findAll();
     }
 
@@ -50,13 +47,13 @@ public class AccountApiController {
     }
 
     @PostMapping("/register")
-    public String saveAccount(@RequestBody Accounts newAccounts){
+    public String saveAccount(@RequestBody Account newAccount){
         String message = "";
-        Accounts existAccount = accountService.findUsersByEmail(newAccounts.getEmail());
+        Account existAccount = accountService.findUsersByEmail(newAccount.getEmail());
        try {
-           if (existAccount == null || !newAccounts.getEmail().equals(existAccount.getEmail()) ){
-               newAccounts.setPassword(passwordEncoder.encode(newAccounts.getPassword()));
-               accountService.save(newAccounts);
+           if (existAccount == null || !newAccount.getEmail().equals(existAccount.getEmail()) ){
+               newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
+               accountService.save(newAccount);
                message = "Đăng ký thành công !!!";
            }else {
                message = "Email đã tồn tại !" ;

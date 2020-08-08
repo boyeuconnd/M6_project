@@ -1,8 +1,7 @@
 package com.nancy.m6project.model.status;
 
-import com.nancy.m6project.model.account.Accounts;
+import com.nancy.m6project.model.account.Account;
 import lombok.*;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -26,6 +25,6 @@ public class Status {
     private Set<Comment> comments;
 
     @ManyToOne
-    private Accounts accounts;
+    private Account account;
 
 }

@@ -11,8 +11,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "accounts")
-public class Accounts {
+@Table(name = "account")
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

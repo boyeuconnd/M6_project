@@ -1,14 +1,14 @@
 package com.nancy.m6project.service.account;
 
-import com.nancy.m6project.model.account.Accounts;
+import com.nancy.m6project.model.account.Account;
 
 public interface AccountService {
-    Accounts save(Accounts accounts);
+    Account save(Account account);
 
-    Iterable<Accounts> findAll();
+    Iterable<Account> findAll();
 
-    Accounts findOne(Long id);
+    Account findOne(Long id);
 
-    Accounts findUsersByEmail(String email);
+    Account findUsersByEmail(String email);
 
 }
