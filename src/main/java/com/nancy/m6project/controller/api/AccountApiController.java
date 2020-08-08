@@ -7,6 +7,7 @@ import com.nancy.m6project.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
@@ -23,6 +24,9 @@ public class AccountApiController {
 
     @Autowired
     private AccountServiceImpl accountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/account")
     public Iterable<Accounts> getAll(){
@@ -52,6 +56,7 @@ public class AccountApiController {
         Accounts account = accountService.findUsersByEmail(accounts.getEmail());
        try {
            if (account == null || !accounts.getEmail().equals(account.getEmail()) ){
+               accounts.setPassword(passwordEncoder.encode(accounts.getPassword()));
                accountService.save(accounts);
                message = "Đăng ký thành công !!!";
            }else {
