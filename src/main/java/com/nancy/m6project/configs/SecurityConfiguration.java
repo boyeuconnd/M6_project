@@ -18,11 +18,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     @Autowired
     private AccountService accountService;
@@ -57,9 +59,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .and().formLogin()
                 .and().exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));;
+                .and().cors();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry corsRegistry) {
+        corsRegistry.addMapping( "/**" )
+                .allowedOrigins( "http://localhost:4200" )
+                .allowedMethods( "GET", "POST", "DELETE" )
+                .allowedHeaders( "*" )
+                .allowCredentials( true )
+                .exposedHeaders( "Authorization" )
+                .maxAge( 3600 );
+    }
+
 
 
 

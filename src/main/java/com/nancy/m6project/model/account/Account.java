@@ -35,11 +35,11 @@ public class Account {
     @ManyToOne
     private Gender gender;
 
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     @JsonIgnore
     private Set<Comment> comments;
 
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     @JsonIgnore
     private Set<Status> statuses;
 }
