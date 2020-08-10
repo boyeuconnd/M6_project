@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,7 +53,7 @@ public class AccountApiController {
     }
 
     @PostMapping("/register")
-    public String saveAccount(@RequestBody Account newAccount){
+    public String saveAccount(@RequestBody @Validated Account newAccount){
         String message = "";
         Account existAccount = accountService.findUsersByEmail(newAccount.getEmail());
        try {
