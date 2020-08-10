@@ -24,7 +24,7 @@ public class Status {
 //    @Transient
 //    private Long like;
 
-    @OneToMany
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
     private Set<Comment> comments;
 
     @ManyToOne
