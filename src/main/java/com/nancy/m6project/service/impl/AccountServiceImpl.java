@@ -53,4 +53,14 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         return new User(account.getEmail(), account.getPassword(),rolelist);
     }
 
+    @Override
+    public Account findAccountByEmail(String email){
+        return this.accountRepositories.findUsersByEmail(email);
+    }
+
+    @Override
+    public Boolean existsAccountByEmail(String email) {
+        return this.accountRepositories.existsAccountByEmail(email);
+    }
+
 }

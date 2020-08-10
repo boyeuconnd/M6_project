@@ -13,5 +13,10 @@ public interface AccountService {
 
     Iterable<Account> findAllByNameContaining(String name);
 
+    Account findAccountByEmail(String email);
+
+    Boolean existsAccountByEmail(String email);
+
+
 
 }

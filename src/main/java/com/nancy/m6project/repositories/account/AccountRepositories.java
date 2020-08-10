@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepositories extends CrudRepository<Account,Long> {
     Account findUsersByEmail(String email);
     Iterable<Account> findAllByNameContaining(String name);
+
+    Boolean existsAccountByEmail(String email);
+
 }
