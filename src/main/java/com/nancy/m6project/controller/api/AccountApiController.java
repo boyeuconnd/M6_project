@@ -4,6 +4,7 @@ import com.nancy.m6project.jwt.JwtUntil;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.AuthRequest;
 import com.nancy.m6project.service.impl.AccountServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,14 +33,16 @@ public class AccountApiController {
 
 
     @PostMapping("/login")
-    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
+    public String generateToken(@RequestBody AuthRequest authRequest){
         String message = "";
-        try{
+        try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                             authRequest.getPassword())
             );
             message = jwtUntil.generateToken(authRequest.getEmail());
+        }catch(ExpiredJwtException jwtExpired){
+            message = "Phiên làm việc hết hạn";
         }catch (Exception ex){
             message = "Invalid Email or password";
         }

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "status")
+@Table(name = "statuses")
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,8 +21,8 @@ public class Status {
 
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
-    @Transient
-    private int like = 0;
+//    @Transient
+//    private Long like;
 
     @OneToMany
     private Set<Comment> comments;
