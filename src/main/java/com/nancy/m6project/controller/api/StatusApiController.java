@@ -4,9 +4,7 @@ import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.plaf.PanelUI;
 
@@ -31,5 +29,14 @@ public class StatusApiController {
             message = "Lỗi !!";
         }
         return message;
+    }
+
+    @GetMapping("api/statuses/{id}")
+    public Iterable<Status> listStatus(@PathVariable Long id){
+        Iterable<Status> list = statusService.findStatusByAccount_Id(id);
+        for (Status status : list) {
+            status.getAccount().setPassword("hidden");
+        }
+        return list;
     }
 }

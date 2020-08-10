@@ -13,8 +13,14 @@ public class StatusServiceImpl implements StatusService {
     @Autowired
     StatusRepositoties statusRepositoties;
 
+
     @Override
     public Status save(Status status) {
         return statusRepositoties.save(status);
+    }
+
+    @Override
+    public Iterable<Status> findStatusByAccount_Id(Long id) {
+        return statusRepositoties.findStatusByAccount_Id(id);
     }
 }
