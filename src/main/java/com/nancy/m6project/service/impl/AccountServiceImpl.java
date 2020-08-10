@@ -41,6 +41,11 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
+    public Iterable<Account> findAllByNameContaining(String name) {
+        return accountRepositories.findAllByNameContaining(name);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = this.findUsersByEmail(username);
         List<GrantedAuthority> rolelist = new ArrayList<>();
