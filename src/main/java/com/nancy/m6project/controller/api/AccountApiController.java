@@ -66,4 +66,12 @@ public class AccountApiController {
        }
         return message;
     }
+
+    @GetMapping("/api/account-details/{id}")
+    public Account accountDetails(@PathVariable Long id){
+        Account account = accountService.findOne(id);
+        account.setPassword("hidden");
+        return account;
+    }
+
 }
