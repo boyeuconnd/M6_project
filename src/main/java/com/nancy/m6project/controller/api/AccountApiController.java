@@ -6,6 +6,8 @@ import com.nancy.m6project.model.account.AuthRequest;
 import com.nancy.m6project.service.impl.AccountServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,5 +75,26 @@ public class AccountApiController {
         account.setPassword("hidden");
         return account;
     }
+    @PostMapping("api/edit/{id}")
+    public ResponseEntity<Void> editInfomation(@RequestBody Account account){
+        accountService.save(account);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @PostMapping("api/find-list-users")
+    public Iterable<Account> findAllUserByName(@RequestBody String name){
+        Iterable<Account> listResult = accountService.findAllByNameContaining(name);
+        for (Account account: listResult
+             ) {
+            account.setPassword("hidden");
+        }
+        return listResult;
+    }
+    @GetMapping("api/find-one-user/{id}")
+    public Account findOneUserByName(@RequestParam Long id){
+        Account account = accountService.findOne(id);
+
+        return account;
+    }
+
 
 }
