@@ -69,7 +69,7 @@ public class AccountApiController {
            if (!isAccountExist){
                newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
                accountService.save(newAccount);
-               message = "Đăng ký thành công !!!";
+               message = "Đăng ký thành công";
            }else {
                message = "Email đã tồn tại !" ;
            }
