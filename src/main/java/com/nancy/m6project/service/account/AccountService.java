@@ -11,4 +11,7 @@ public interface AccountService {
 
     Account findUsersByEmail(String email);
 
+    Iterable<Account> findAllByNameContaining(String name);
+
+
 }

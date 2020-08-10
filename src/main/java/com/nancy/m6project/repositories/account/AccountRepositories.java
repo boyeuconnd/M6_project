@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepositories extends CrudRepository<Account,Long> {
     Account findUsersByEmail(String email);
+    Iterable<Account> findAllByNameContaining(String name);
 }
