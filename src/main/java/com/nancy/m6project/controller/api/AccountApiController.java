@@ -14,12 +14,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 //@RequestMapping("api")
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AccountApiController {
     @Autowired
     private JwtUntil jwtUntil;
@@ -99,12 +100,11 @@ public class AccountApiController {
         }
         return listResult;
     }
-    @GetMapping("api/find-one-user/{id}")
-    public Account findOneUserByName(@RequestParam Long id){
-        Account account = accountService.findOne(id);
-
-        return account;
+    @GetMapping("api/get-profile-user")
+    public ResponseEntity<Account> findOneUserByName(Principal principal){
+        String user_Email = principal.getName();
+        Account account = accountService.findAccountByEmail(user_Email);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
-
 
 }
