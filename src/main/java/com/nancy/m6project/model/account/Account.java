@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 @Table(name = "account")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -31,6 +32,9 @@ public class Account {
     private Long phoneNumber;
 
     private Date dateOfBirth;
+
+    @Column(columnDefinition = "varchar(190) default 'https://firebasestorage.googleapis.com/v0/b/final-project-dangpham.appspot.com/o/avatar%2Favatar-default.png?alt=media&token=c6aefd28-07a0-49ce-9507-2885ef64df68'")
+    private String avatarUrl;
 
     @ManyToOne
     private Gender gender;
