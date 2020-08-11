@@ -85,7 +85,7 @@ public class AccountApiController {
         account.setPassword("hidden");
         return account;
     }
-    @PostMapping("api/edit/{id}")
+    @PutMapping("api/edit/{id}")
     public ResponseEntity<Void> editInfomation(@RequestBody Account account){
         accountService.save(account);
         return new ResponseEntity<>(HttpStatus.CREATED);
