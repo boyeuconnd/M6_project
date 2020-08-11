@@ -16,6 +16,9 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "status", nullable = false)
+    private int status;
+
     @Column(name = "create_date", nullable = false)
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
@@ -29,8 +32,4 @@ public class FriendRequest {
     @ManyToOne
     @JoinColumn(name = "account_receive", referencedColumnName = "id", nullable = false)
     private Account accountReceive;
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    private RelationStatus relationStatus;
 }
