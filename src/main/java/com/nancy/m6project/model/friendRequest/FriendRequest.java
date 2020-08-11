@@ -17,7 +17,7 @@ public class FriendRequest {
     private Long id;
 
     @Column(name = "status", nullable = false)
-    private int status;
+    private Integer status;
 
     @Column(name = "create_date", nullable = false)
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
