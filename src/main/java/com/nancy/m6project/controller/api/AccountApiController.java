@@ -3,6 +3,7 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.jwt.JwtUntil;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.AuthRequest;
+import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.service.impl.AccountServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("api")
-//@CrossOrigin(origins = "http://localhost:4200")
 public class AccountApiController {
     @Autowired
     private JwtUntil jwtUntil;
@@ -40,24 +39,23 @@ public class AccountApiController {
 
 
     @PostMapping("/login")
-    public Map<String,String> generateToken(@RequestBody AuthRequest authRequest){
-        HashMap<String,String> response = new HashMap<>();
-        String message = "";
-        Long userId;
+    public HttpResponse generateToken(@RequestBody AuthRequest authRequest){
+        HttpResponse response = new HttpResponse();
+        Account resposeAccount = this.accountService.findAccountByEmail(authRequest.getEmail());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
                             authRequest.getPassword())
             );
-            message = "Login success";
-            response.put("token",jwtUntil.generateToken(authRequest.getEmail()));
-            response.put("email",authRequest.getEmail());
+            response.setMessage("Login success");
+            response.setToken(jwtUntil.generateToken(authRequest.getEmail()));
+            resposeAccount.setEmail(authRequest.getEmail());
+            response.setAccount_id(resposeAccount.getId());
         }catch(ExpiredJwtException jwtExpired){
-            message = "Phiên làm việc hết hạn";
+            response.setMessage("Phiên làm việc hết hạn");
         }catch (Exception ex){
-            message = "Invalid Email or password";
+            response.setMessage("Email hoặc mật khẩu không đúng");
         }
-        response.put("message",message);
         return response;
     }
 
