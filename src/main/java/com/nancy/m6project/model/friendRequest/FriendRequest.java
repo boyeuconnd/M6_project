@@ -29,4 +29,8 @@ public class FriendRequest {
     @ManyToOne
     @JoinColumn(name = "account_receive", referencedColumnName = "id", nullable = false)
     private Account accountReceive;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private RelationStatus relationStatus;
 }
