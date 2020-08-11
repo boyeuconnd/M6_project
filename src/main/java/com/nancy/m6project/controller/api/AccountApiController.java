@@ -80,7 +80,6 @@ public class AccountApiController {
     @GetMapping("/api/account-details/{id}")
     public Account accountDetails(@PathVariable Long id){
         Account account = accountService.findOne(id);
-        account.setPassword("hidden");
         return account;
     }
     @PutMapping("api/edit/{id}")
@@ -93,7 +92,6 @@ public class AccountApiController {
         Iterable<Account> listResult = accountService.findAllByNameContaining(name);
         for (Account account: listResult
              ) {
-            account.setPassword("hidden");
         }
         return listResult;
     }
