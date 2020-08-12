@@ -25,7 +25,7 @@ public class FriendRequestApiController {
     @Autowired
     private FriendRequestService friendRequestService;
 
-    @PostMapping("/api/{sent_id}/friend_request/{receive_id}")
+    @GetMapping("/api/{sent_id}/friend_request/{receive_id}")
     public String SendFriendRequest(@PathVariable Long sent_id, @PathVariable Long receive_id) throws SQLIntegrityConstraintViolationException {
         String message = "";
         if (friendRequestService.existsFriendRequestByAccountReceive_IdAndAccountSend_Id(sent_id, receive_id)) {
