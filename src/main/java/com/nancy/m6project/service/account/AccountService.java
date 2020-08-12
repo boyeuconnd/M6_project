@@ -9,7 +9,7 @@ public interface AccountService {
 
     Account findOne(Long id);
 
-    Account findUsersByEmail(String email);
+    Account findAccountsByEmail(String email);
 
     Iterable<Account> findAllByNameContaining(String name);
 

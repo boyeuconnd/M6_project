@@ -36,8 +36,8 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public Account findUsersByEmail(String username) {
-        return accountRepositories.findUsersByEmail(username);
+    public Account findAccountsByEmail(String username) {
+        return accountRepositories.findAccountsByEmail(username);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = this.findUsersByEmail(username);
+        Account account = this.findAccountsByEmail(username);
         List<GrantedAuthority> rolelist = new ArrayList<>();
 //        rolelist.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return new User(account.getEmail(), account.getPassword(),rolelist);
@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 
     @Override
     public Account findAccountByEmail(String email){
-        return this.accountRepositories.findUsersByEmail(email);
+        return this.accountRepositories.findAccountsByEmail(email);
     }
 
     @Override
