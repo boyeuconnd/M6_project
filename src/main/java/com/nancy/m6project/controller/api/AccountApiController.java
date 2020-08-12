@@ -83,9 +83,15 @@ public class AccountApiController {
         return account;
     }
     @PutMapping("api/edit/{id}")
-    public ResponseEntity<Void> editInfomation(@RequestBody Account account){
-        accountService.save(account);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public HttpResponse editInfomation(@RequestBody Account account){
+        HttpResponse response = new HttpResponse();
+        Account editedAccount = accountService.save(account);
+        if(editedAccount != null){
+            response.setMessage("Success");
+        }else {
+            response.setMessage("Fail");
+        }
+        return response;
     }
     @PostMapping("api/find-list-users")
     public Iterable<Account> findAllUserByName(@RequestBody String name){
