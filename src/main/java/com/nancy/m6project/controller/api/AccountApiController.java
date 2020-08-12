@@ -93,20 +93,12 @@ public class AccountApiController {
         }
         return response;
     }
-    @PostMapping("api/find-list-users")
-    public Iterable<Account> findAllUserByName(@RequestBody String name){
-        Iterable<Account> listResult = accountService.findAllByNameContaining(name);
-        for (Account account: listResult
-             ) {
-        }
+    @PatchMapping("api/find-list-users")
+    public Iterable<Account> findAllUserByName(@RequestBody String keyword){
+        Iterable<Account> listResult = accountService.findAllByNameContaining(keyword);
         return listResult;
     }
-    @GetMapping("api/find-one-user/{id}")
-    public Account findOneUserByName(@RequestParam Long id){
-        Account account = accountService.findOne(id);
 
-        return account;
-    }
 
 
 }

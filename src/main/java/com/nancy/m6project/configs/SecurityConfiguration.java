@@ -67,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping( "/**" )
                 .allowedOrigins( "http://localhost:4200" )
-                .allowedMethods( "GET", "POST", "DELETE","PUT" )
+                .allowedMethods( "GET", "POST", "DELETE","PUT" , "PATCH")
                 .allowedHeaders( "*" )
                 .allowCredentials( true )
                 .exposedHeaders( "Authorization" )
