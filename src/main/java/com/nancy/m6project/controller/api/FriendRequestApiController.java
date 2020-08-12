@@ -1,6 +1,7 @@
 package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
+import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
@@ -26,11 +27,11 @@ public class FriendRequestApiController {
     private FriendRequestService friendRequestService;
 
     @GetMapping("/api/{sent_id}/friend_request/{receive_id}")
-    public String SendFriendRequest(@PathVariable Long sent_id, @PathVariable Long receive_id) throws SQLIntegrityConstraintViolationException {
-        String message = "";
+    public HttpResponse SendFriendRequest(@PathVariable Long sent_id, @PathVariable Long receive_id) throws SQLIntegrityConstraintViolationException {
+        HttpResponse httpResponse = new HttpResponse();
         if (friendRequestService.existsFriendRequestByAccountReceive_IdAndAccountSend_Id(sent_id, receive_id)) {
-            message = "duplicate";
-            return message;
+            httpResponse.setMessage("duplicate");
+            return httpResponse;
         }
         FriendRequest newFriendRes = new FriendRequest();
         newFriendRes.setAccountSend(accountService.findOne(sent_id));
@@ -39,34 +40,34 @@ public class FriendRequestApiController {
         FriendRequest responseFR = friendRequestService.save(newFriendRes);
 
         if (responseFR != null) {
-            message = "success";
-            return message;
+            httpResponse.setMessage("success");
+            return httpResponse;
         }
-        message = "fail";
-        return message;
+        httpResponse.setMessage("fail");
+        return httpResponse;
     }
 
     @PutMapping("/api/friend_request_response/{friend_request_id}")
-    public String AcceptFriendRequest(@PathVariable Long friend_request_id) throws SQLIntegrityConstraintViolationException {
-        String messege = "";
+    public HttpResponse AcceptFriendRequest(@PathVariable Long friend_request_id) throws SQLIntegrityConstraintViolationException {
+        HttpResponse httpResponse = new HttpResponse();
         FriendRequest friendRequest = friendRequestService.getFriendRequestById(friend_request_id);
         if (friendRequest != null) {
             friendRequest.setStatus(ACCEPT);
             friendRequestService.save(friendRequest);
-            messege = "success";
+            httpResponse.setMessage("success");
         } else {
-            messege = "fail";
+            httpResponse.setMessage("fail");
         }
-        return messege;
+        return httpResponse;
     }
 
     @DeleteMapping("/api/friend_request_response/{friend_request_id}")
-    public String DeleteFriendRequest(@PathVariable Long friend_request_id) {
-        String message = "";
+    public HttpResponse DeleteFriendRequest(@PathVariable Long friend_request_id) {
+        HttpResponse httpResponse = new HttpResponse();
         FriendRequest friendRequest = friendRequestService.getFriendRequestById(friend_request_id);
         friendRequestService.delete(friend_request_id);
-        message = "xóa thành công";
-        return message;
+        httpResponse.setMessage("xóa thành công");
+        return httpResponse;
 
     }
 
@@ -85,13 +86,13 @@ public class FriendRequestApiController {
     }
 
     @GetMapping("/api/{account_id}/friend_request_response")
-    public List<Account> getListAccountRequestToMe(@PathVariable Long account_id) {
+    public List<FriendRequest> getListAccountRequestToMe(@PathVariable Long account_id) {
         List<Account> accountList = new ArrayList<>();
         List<FriendRequest> friendRequestList = friendRequestService.getAllFriendRequestAccountReceived(account_id, PENDING);
         for (FriendRequest friendRequest : friendRequestList) {
             accountList.add(friendRequest.getAccountSend());
         }
-        return accountList;
+        return friendRequestList;
     }
 
 
