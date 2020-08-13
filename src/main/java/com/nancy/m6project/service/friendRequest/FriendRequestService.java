@@ -10,8 +10,6 @@ public interface FriendRequestService {
 
     List<FriendRequest> getAllFriendRequestAccountReceived(Long accountId, Integer status);
 
-    boolean isFriend(Long accountSendId1, Long accountReceiveId2, Integer status);
-
     FriendRequest save(FriendRequest model) throws SQLIntegrityConstraintViolationException;
 
     boolean delete(Long id);
@@ -21,4 +19,8 @@ public interface FriendRequestService {
     Boolean existsFriendRequestByAccountReceive_IdAndAccountSend_Id(Long sentId, Long receiveId);
 
     List<FriendRequest> getAllFriendByAccountId(Long accountSendId, Integer status1, Long accountReceiveId, Integer status2);
+
+    FriendRequest getFriendRequestByAccountSendIdAndAccountReceiveId(Long accountSendId, Long accountReceiveId);
+
+    String checkRelation (Long currentId, Long checkId);
 }

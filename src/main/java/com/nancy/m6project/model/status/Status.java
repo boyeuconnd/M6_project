@@ -17,12 +17,14 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(columnDefinition = "text")
     private String content;
 
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
-//    @Transient
-//    private Long like;
+    private Integer totalLikes;
+
+    private Integer totalComments;
 
     @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
     private Set<Comment> comments;
