@@ -1,5 +1,6 @@
 package com.nancy.m6project.model.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
 import lombok.*;
@@ -20,7 +21,11 @@ public class Status {
     @Column(columnDefinition = "text")
     private String content;
 
+    @Column(name = "create_date", nullable = false)
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
+
+    @Column(name = "modify_date", nullable = false)
+    private Timestamp modifyDate = Timestamp.valueOf(LocalDateTime.now());
 
     private Integer totalLikes;
 
@@ -32,5 +37,9 @@ public class Status {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Account account;
+
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<StatusLike> likes;
 
 }
