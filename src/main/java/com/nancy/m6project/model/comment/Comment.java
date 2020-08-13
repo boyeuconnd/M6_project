@@ -19,7 +19,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     private Status status;
 
     @ManyToOne
