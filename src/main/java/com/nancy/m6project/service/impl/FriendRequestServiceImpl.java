@@ -26,17 +26,6 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public boolean isFriend(Long accountSendId1, Long accountReceiveId2, Integer status) {
-        FriendRequest friendRequest = friendRequestRepositories.findByAccountSendIdAndAccountReceiveIdAndStatus(accountSendId1, accountReceiveId2, status);
-        FriendRequest friendRequestReverse = friendRequestRepositories.findByAccountSendIdAndAccountReceiveIdAndStatus(accountReceiveId2, accountSendId1, status);
-        if (friendRequest != null || friendRequestReverse != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
     public FriendRequest save(FriendRequest model) {
         return friendRequestRepositories.save(model);
     }
@@ -61,5 +50,37 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     @Override
     public List<FriendRequest> getAllFriendByAccountId(Long accountSendId, Integer status1, Long accountReceiveId, Integer status2) {
         return friendRequestRepositories.findAllByAccountSendIdAndStatusOrAccountReceiveIdAndStatus(accountSendId, status1, accountReceiveId, status2);
+    }
+
+    @Override
+    public FriendRequest getFriendRequestByAccountSendIdAndAccountReceiveId(Long accountSendId, Long accountReceiveId) {
+        return friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(accountSendId, accountReceiveId);
+    }
+
+    @Override
+    public String checkRelation(Long currentId, Long checkId) {
+        FriendRequest friendRequest = friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(currentId, checkId);
+        FriendRequest friendRequestReverse = friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(checkId,currentId);
+        String relation = "";
+        if (friendRequest == null && friendRequestReverse == null) {
+            relation = "none";
+        }
+        if (friendRequest == null && friendRequestReverse != null) {
+            if (friendRequestReverse.getStatus() == 0) {
+                relation = "pending";
+            }
+            if (friendRequestReverse.getStatus() == 1) {
+                relation="friend";
+            }
+        }
+        if (friendRequest != null && friendRequestReverse == null) {
+            if (friendRequest.getStatus() == 0) {
+                relation = "pending";
+            }
+            if (friendRequest.getStatus() == 1) {
+                relation = "friend";
+            }
+        }
+        return relation;
     }
 }

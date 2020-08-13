@@ -21,4 +21,6 @@ public interface FriendRequestRepositories extends CrudRepository<FriendRequest,
     Boolean existsFriendRequestByAccountReceive_IdAndAccountSend_Id(Long sentId, Long receiveId);
 
     List<FriendRequest> findAllByAccountSendIdAndStatusOrAccountReceiveIdAndStatus(Long accountSendId, Integer status1, Long accountReceiveId, Integer status2);
+
+    FriendRequest findFriendRequestByAccountSendIdAndAccountReceiveId(Long accountSendId, Long accountReceiveId);
 }

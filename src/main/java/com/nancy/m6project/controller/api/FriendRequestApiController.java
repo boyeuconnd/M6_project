@@ -3,6 +3,7 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.response.RelationResponse;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +96,10 @@ public class FriendRequestApiController {
         return friendRequestList;
     }
 
-
+    @GetMapping("/api/{current_id}/check_relation/{check_id}")
+    public RelationResponse checkRelationship(@PathVariable Long current_id, @PathVariable Long check_id) {
+        RelationResponse relationResponse = new RelationResponse();
+        relationResponse.setName(friendRequestService.checkRelation(current_id, check_id));
+        return relationResponse;
+    }
 }
