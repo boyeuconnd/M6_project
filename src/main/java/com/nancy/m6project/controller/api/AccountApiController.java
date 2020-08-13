@@ -4,6 +4,7 @@ import com.nancy.m6project.jwt.JwtUntil;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.AuthRequest;
 import com.nancy.m6project.model.account.HttpResponse;
+import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.service.impl.AccountServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,21 +62,21 @@ public class AccountApiController {
     }
 
     @PostMapping("/register")
-    public String saveAccount(@RequestBody @Validated Account newAccount){
-        String message = "";
+    public ResultResponse saveAccount(@RequestBody @Validated Account newAccount){
+        ResultResponse response = new ResultResponse();
         Boolean isAccountExist = this.accountService.existsAccountByEmail(newAccount.getEmail());
        try {
            if (!isAccountExist){
                newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
                accountService.save(newAccount);
-               message = "Đăng ký thành công";
+               response.setMessage("Đăng ký thành công");
            }else {
-               message = "Email đã tồn tại !" ;
+               response.setMessage("Email đã tồn tại !");
            }
        }catch (Exception e){
-           message = "Lỗi email hoặc mật khẩu chưa nhập !";
+           response.setMessage("Lỗi email hoặc mật khẩu chưa nhập !");
        }
-        return message;
+        return response;
     }
 
     @GetMapping("/api/account-details/{id}")
