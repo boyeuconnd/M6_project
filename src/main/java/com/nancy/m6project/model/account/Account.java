@@ -34,7 +34,7 @@ public class Account {
 
     private Date dateOfBirth;
 
-    @Column(columnDefinition = "varchar(190) default 'https://firebasestorage.googleapis.com/v0/b/final-project-dangpham.appspot.com/o/avatar%2Favatar-default.png?alt=media&token=c6aefd28-07a0-49ce-9507-2885ef64df68'")
+    @Column(columnDefinition = "text")
     private String avatarUrl;
 
     @ManyToOne
