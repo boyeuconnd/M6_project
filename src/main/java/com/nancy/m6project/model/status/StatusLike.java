@@ -1,24 +1,22 @@
-package com.nancy.m6project.model.comment;
+package com.nancy.m6project.model.status;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nancy.m6project.model.account.Account;
-import com.nancy.m6project.model.status.Status;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "comment")
-public class Comment {
+@Table(name = "status_likes")
+public class StatusLike {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String content;
+    private Boolean isStatusLike = false;
 
     @Column(name = "created_date", nullable = false)
     private Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
@@ -27,13 +25,10 @@ public class Comment {
     private Timestamp modifyDate = Timestamp.valueOf(LocalDateTime.now());
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    @EqualsAndHashCode.Exclude
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 }
