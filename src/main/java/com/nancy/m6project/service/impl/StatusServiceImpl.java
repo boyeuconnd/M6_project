@@ -1,7 +1,8 @@
 package com.nancy.m6project.service.impl;
 
-import com.nancy.m6project.model.friendRequest.FriendRequest;
+
 import com.nancy.m6project.model.status.Status;
+import com.nancy.m6project.repositories.friendRequest.FriendRequestRepositories;
 import com.nancy.m6project.repositories.status.StatusRepositoties;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,6 +20,9 @@ public class StatusServiceImpl implements StatusService {
 
     @Autowired
     StatusRepositoties statusRepositoties;
+
+    @Autowired
+    FriendRequestRepositories friendRequestRepositories;
 
 
     @Override
@@ -66,6 +71,13 @@ public class StatusServiceImpl implements StatusService {
     public Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id) {
         return statusRepositoties.findStatusByAccount_IdOrderByCreateDateDesc(id);
     }
+
+    @Override
+    public List<Status> getAllStatusByAccountId(Long id) {
+        return statusRepositoties.findStatusesByAccountId(id);
+    }
+
+
 
     @Override
     public Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id) {
