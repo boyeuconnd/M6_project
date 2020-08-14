@@ -1,5 +1,6 @@
 package com.nancy.m6project.controller.api;
 
+import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.comment.Comment;
@@ -59,5 +60,10 @@ public class StatusApiController {
         }
 
         return resultResponse;
+    }
+    @PatchMapping("api/find-status/{id}")
+    public Iterable<Status> findStatus(@RequestBody String keyword, @PathVariable Long id){
+        Iterable<Status> listResult = statusService.findAllByContentContainingAndAccount_Id(keyword, id);
+        return listResult;
     }
 }

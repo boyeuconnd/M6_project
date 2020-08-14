@@ -9,4 +9,6 @@ public interface StatusService extends GenericCRUDService<Status> {
     Status save(Status status);
     Status findOne(Long id);
     Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id);
+    Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id);
+
 }

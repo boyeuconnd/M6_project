@@ -66,4 +66,9 @@ public class StatusServiceImpl implements StatusService {
     public Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id) {
         return statusRepositoties.findStatusByAccount_IdOrderByCreateDateDesc(id);
     }
+
+    @Override
+    public Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id) {
+        return  statusRepositoties.findAllByContentContainingAndAccount_Id(keyword, id);
+    }
 }
