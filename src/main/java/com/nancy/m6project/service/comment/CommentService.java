@@ -6,6 +6,7 @@ import java.util.Set;
 
 public interface CommentService {
     Comment save(Comment comment);
-    Set<Comment> findCommentByStatusIdOrderByCreateDateAsc(Long id);
+    Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id);
 
 }
+

@@ -41,7 +41,7 @@ public class StatusApiController {
     public Iterable<Status> listStatus(@PathVariable Long id){
         Iterable<Status> list = statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
         for (Status status : list) {
-            status.setComments((Set<Comment>) commentService.findCommentByStatusIdOrderByCreateDateAsc(status.getId()));
+            status.setComments((Set<Comment>) commentService.findCommentByStatusIdOrderByCreatedDateAsc(status.getId()));
         }
         return list;
     }

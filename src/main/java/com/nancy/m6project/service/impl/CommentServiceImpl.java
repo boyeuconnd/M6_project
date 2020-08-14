@@ -18,8 +18,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Set<Comment> findCommentByStatusIdOrderByCreateDateAsc(Long id) {
-        return commentRepository.findCommentByStatusIdOrderByCreateDateAsc(id);
+    public Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id) {
+        return commentRepository.findCommentByStatusIdOrderByCreatedDateAsc(id);
     }
 
 }

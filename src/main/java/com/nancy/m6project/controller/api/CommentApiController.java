@@ -1,6 +1,5 @@
 package com.nancy.m6project.controller.api;
 
-import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.comment.CommentService;
@@ -8,7 +7,6 @@ import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -29,7 +27,7 @@ public class CommentApiController {
     }
     @GetMapping("api/comment-getAll/{id}")
     public Iterable<Comment> getAllCommentByStatusID(@PathVariable Long id){
-        Iterable<Comment> commentList = commentService.findCommentByStatusIdOrderByCreateDateAsc(id);
+        Iterable<Comment> commentList = commentService.findCommentByStatusIdOrderByCreatedDateAsc(id);
         return commentList;
     }
 }
