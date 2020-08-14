@@ -4,6 +4,9 @@ import com.nancy.m6project.model.friendRequest.FriendRequest;
 import com.nancy.m6project.repositories.friendRequest.FriendRequestRepositories;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -16,18 +19,38 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     private FriendRequestRepositories friendRequestRepositories;
 
     @Override
-    public FriendRequest getFriendRequestById(Long friendRequestId) {
-        return friendRequestRepositories.findFriendRequestById(friendRequestId);
-    }
-
-    @Override
     public List<FriendRequest> getAllFriendRequestAccountReceived(Long accountId, Integer status) {
         return friendRequestRepositories.findAllByAccountReceiveIdAndStatus(accountId, status);
     }
 
     @Override
+    public List<FriendRequest> findAll() {
+        return null;
+    }
+
+    @Override
+    public List<FriendRequest> findAll(Sort sort) {
+        return null;
+    }
+
+    @Override
+    public Page<FriendRequest> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public FriendRequest findById(Long id) {
+        return friendRequestRepositories.findById(id).get();
+    }
+
+    @Override
     public FriendRequest save(FriendRequest model) {
         return friendRequestRepositories.save(model);
+    }
+
+    @Override
+    public FriendRequest update(FriendRequest model) {
+        return null;
     }
 
     @Override

@@ -1,18 +1,13 @@
 package com.nancy.m6project.service.friendRequest;
 
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.service.GenericCRUDService;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-public interface FriendRequestService {
-    FriendRequest getFriendRequestById(Long friendRequestId);
+public interface FriendRequestService extends GenericCRUDService<FriendRequest> {
 
     List<FriendRequest> getAllFriendRequestAccountReceived(Long accountId, Integer status);
-
-    FriendRequest save(FriendRequest model) throws SQLIntegrityConstraintViolationException;
-
-    boolean delete(Long id);
 
     Boolean existsByAccountSendIdOrAccountReceiveId(Long accountSent, Long accountReceive);
 
@@ -22,5 +17,5 @@ public interface FriendRequestService {
 
     FriendRequest getFriendRequestByAccountSendIdAndAccountReceiveId(Long accountSendId, Long accountReceiveId);
 
-    String checkRelation (Long currentId, Long checkId);
+    String checkRelation(Long currentId, Long checkId);
 }
