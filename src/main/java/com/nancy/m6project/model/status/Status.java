@@ -29,9 +29,9 @@ public class Status {
     @Column(name = "modify_date", nullable = false)
     private Timestamp modifyDate = Timestamp.valueOf(LocalDateTime.now());
 
-    private Integer totalLikes;
+    private Integer totalLikes = 0;
 
-    private Integer totalComments;
+    private Integer totalComments = 0;
 
     @OneToMany
     private List<Img> images;
