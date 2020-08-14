@@ -1,5 +1,7 @@
 package com.nancy.m6project.model.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
 import lombok.*;
@@ -29,6 +31,7 @@ public class Status {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private Account account;
 
 }

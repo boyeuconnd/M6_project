@@ -20,6 +20,11 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    public Status findOne(Long id) {
+        return statusRepositoties.findById(id).get();
+    }
+
+    @Override
     public Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id) {
         return statusRepositoties.findStatusByAccount_IdOrderByCreateDateDesc(id);
     }

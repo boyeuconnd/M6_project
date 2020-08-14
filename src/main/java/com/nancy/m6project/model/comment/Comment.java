@@ -6,6 +6,9 @@ import com.nancy.m6project.model.status.Status;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,13 +19,17 @@ public class Comment {
     private Long id;
 
     private String content;
+    private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
+
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Status status;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private Account account;
 }
