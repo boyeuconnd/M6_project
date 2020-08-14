@@ -49,14 +49,14 @@ public class FriendRequestApiController {
     }
 
     @PutMapping("/api/friend_request_response/{friend_request_id}")
-    public HttpResponse AcceptFriendRequest(@PathVariable Long friend_request_id) throws SQLIntegrityConstraintViolationException {
+    public HttpResponse AcceptFriendRequest(@PathVariable Long friend_request_id){
         HttpResponse httpResponse = new HttpResponse();
-        FriendRequest friendRequest = friendRequestService.getFriendRequestById(friend_request_id);
-        if (friendRequest != null) {
+        try{
+            FriendRequest friendRequest = friendRequestService.findById(friend_request_id);
             friendRequest.setStatus(ACCEPT);
             friendRequestService.save(friendRequest);
             httpResponse.setMessage("success");
-        } else {
+        }catch (Exception e){
             httpResponse.setMessage("fail");
         }
         return httpResponse;
@@ -65,7 +65,7 @@ public class FriendRequestApiController {
     @DeleteMapping("/api/friend_request_response/{friend_request_id}")
     public HttpResponse DeleteFriendRequest(@PathVariable Long friend_request_id) {
         HttpResponse httpResponse = new HttpResponse();
-        FriendRequest friendRequest = friendRequestService.getFriendRequestById(friend_request_id);
+        FriendRequest friendRequest = friendRequestService.findById(friend_request_id);
         friendRequestService.delete(friend_request_id);
         httpResponse.setMessage("xóa thành công");
         return httpResponse;
