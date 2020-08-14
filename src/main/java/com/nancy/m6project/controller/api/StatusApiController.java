@@ -71,30 +71,7 @@ public class StatusApiController {
 
     @GetMapping("/api/newfeed/{current_id}")
     public List<Status> getNewFeed(@PathVariable Long current_id) {
-        List<Status> newFeedList = new ArrayList<>();
-        List<Status> myStatusList = statusService.getAllStatusByAccountId(current_id);
-        List<FriendRequest> friendRequestList = friendRequestService.getAllFriendByAccountId(current_id, 1, current_id, 1);
-
-        List<Long> myFriendListId = new ArrayList<>();
-        for (FriendRequest friendRequest : friendRequestList) {
-            if (friendRequest.getAccountSend().getId() != current_id) {
-                myFriendListId.add(friendRequest.getAccountSend().getId());
-            } else {
-                myFriendListId.add(friendRequest.getAccountReceive().getId());
-            }
-        }
-
-        for (Long myFriendId : myFriendListId) {
-            List<Status> statusList = statusService.getAllStatusByAccountId(myFriendId);
-            for (Status status : statusList) {
-                newFeedList.add(status);
-            }
-        }
-
-        for (Status status : myStatusList) {
-            newFeedList.add(status);
-        }
-
+        List<Status> newFeedList = statusService.getNewFeed(current_id);
         return newFeedList;
     }
     @PatchMapping("api/find-status/{id}")

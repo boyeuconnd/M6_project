@@ -83,4 +83,9 @@ public class StatusServiceImpl implements StatusService {
     public Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id) {
         return  statusRepositoties.findAllByContentContainingAndAccount_Id(keyword, id);
     }
+
+    @Override
+    public List<Status> getNewFeed(Long id) {
+        return statusRepositoties.getNewFeed(id);
+    }
 }
