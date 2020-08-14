@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service;
 
 public interface StatusService extends GenericCRUDService<Status> {
     Status save(Status status);
+    Status findOne(Long id);
     Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id);
 }

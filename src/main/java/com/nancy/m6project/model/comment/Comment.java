@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -28,9 +29,11 @@ public class Comment {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Status status;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private Account account;
 }

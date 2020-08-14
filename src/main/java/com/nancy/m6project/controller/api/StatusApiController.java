@@ -2,12 +2,16 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.response.ResultResponse;
+import com.nancy.m6project.model.comment.Comment;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.account.AccountService;
+import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 
 @RestController
@@ -19,23 +23,26 @@ public class StatusApiController {
     @Autowired
     StatusService statusService;
 
+    @Autowired
+    CommentService commentService;
+
     @PostMapping("api/{id}/create-status")
-    public HttpResponse create(@RequestBody @Validated Status status, @PathVariable Long id) {
+    public HttpResponse create(@RequestBody @Validated Status status,@PathVariable Long id){
         HttpResponse response = new HttpResponse();
         status.setAccount(this.accountService.findOne(id));
-        if (statusService.save(status) != null) {
+        if(statusService.save(status)!= null){
             response.setMessage("success");
-        } else {
+        }else {
             response.setMessage("fail");
         }
         return response;
     }
 
     @GetMapping("api/statuses/{id}")
-    public Iterable<Status> listStatus(@PathVariable Long id) {
+    public Iterable<Status> listStatus(@PathVariable Long id){
         Iterable<Status> list = statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
         for (Status status : list) {
-            status.getAccount().setPassword("hidden");
+            status.setComments((Set<Comment>) commentService.findCommentByStatusIdOrderByCreatedDateAsc(status.getId()));
         }
         return list;
     }
