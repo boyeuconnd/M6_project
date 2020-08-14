@@ -3,11 +3,13 @@ package com.nancy.m6project.model.status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.img.Img;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +32,9 @@ public class Status {
     private Integer totalLikes;
 
     private Integer totalComments;
+
+    @OneToMany
+    private List<Img> images;
 
     @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
     private Set<Comment> comments;
