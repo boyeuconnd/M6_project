@@ -60,4 +60,18 @@ public class StatusLikeApiController {
         return resultResponse;
     }
 
+    @DeleteMapping("/api/{account_id}/unlike/{status_id}")
+    private ResultResponse unLikeStatus2(@PathVariable Long account_id, @PathVariable Long status_id) {
+        ResultResponse resultResponse = new ResultResponse();
+        try {
+            statusLikeService.deleteByAccountIdAndStatusId(account_id, status_id);
+            resultResponse.setMessage("success");
+            Status status = statusService.findOne(status_id);
+            status.setTotalLikes(status.getTotalLikes() - 1);
+            statusService.save(status);
+        } catch (Exception e) {
+            resultResponse.setMessage("fail");
+        }
+        return resultResponse;
+    }
 }

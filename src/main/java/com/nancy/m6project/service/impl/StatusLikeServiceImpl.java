@@ -71,4 +71,14 @@ public class StatusLikeServiceImpl implements StatusLikeService {
             return false;
         }
     }
+
+    @Override
+    public StatusLike deleteByAccountIdAndStatusId(Long account_id, Long status_id) {
+        StatusLike deleteStatusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id,status_id);
+        if(deleteStatusLike != null){
+            statusLikeRepositories.delete(deleteStatusLike);
+            return deleteStatusLike;
+        }
+        return null;
+    }
 }
