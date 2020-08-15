@@ -37,7 +37,7 @@ public class Status {
     @OneToMany
     private List<Img> images;
 
-    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "status")
     private Set<Comment> comments;
 
     @ManyToOne
@@ -45,7 +45,7 @@ public class Status {
     @EqualsAndHashCode.Exclude
     private Account account;
 
-    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "status")
     @JsonIgnore
     private Set<StatusLike> likes;
 
