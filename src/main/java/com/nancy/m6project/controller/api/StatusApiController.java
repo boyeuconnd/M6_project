@@ -48,11 +48,8 @@ public class StatusApiController {
 
     @GetMapping("api/statuses/{id}")
     public Iterable<Status> listStatus(@PathVariable Long id) {
-        Iterable<Status> list = statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
-        for (Status status : list) {
-            status.setComments((Set<Comment>) commentService.findCommentByStatusIdOrderByCreatedDateAsc(status.getId()));
-        }
-        return list;
+        return  statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
+
     }
 
     @DeleteMapping("/api/statuses/{id}/delete")
@@ -74,9 +71,17 @@ public class StatusApiController {
         List<Status> newFeedList = statusService.getNewFeed(current_id);
         return newFeedList;
     }
+
     @PatchMapping("api/find-status/{id}")
-    public Iterable<Status> findStatus(@RequestBody String keyword, @PathVariable Long id){
+    public Iterable<Status> findStatus(@RequestBody String keyword, @PathVariable Long id) {
         Iterable<Status> listResult = statusService.findAllByContentContainingAndAccount_Id(keyword, id);
         return listResult;
     }
+
+    @GetMapping("/api/{status_id}/liked")
+    public List<Account> getAllAccountLikedStatus(@PathVariable Long status_id) {
+        List<Account> accountList = accountService.getAllAccountLikedThisStatus(status_id);
+        return accountList;
+    }
+
 }

@@ -63,4 +63,9 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         return this.accountRepositories.existsAccountByEmail(email);
     }
 
+    @Override
+    public List<Account> getAllAccountLikedThisStatus(Long id) {
+        return accountRepositories.findAllAccountLikedByStatusId(id);
+    }
+
 }

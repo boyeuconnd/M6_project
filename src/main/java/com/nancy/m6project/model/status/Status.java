@@ -37,9 +37,6 @@ public class Status {
     @OneToMany
     private List<Img> images;
 
-    @OneToMany(mappedBy = "status")
-    private Set<Comment> comments;
-
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     @EqualsAndHashCode.Exclude
