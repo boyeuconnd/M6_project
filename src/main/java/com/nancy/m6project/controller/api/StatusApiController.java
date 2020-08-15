@@ -3,16 +3,19 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.response.NewFeedResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.comment.Comment;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
+import com.nancy.m6project.service.like.StatusLikeService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.NewThreadAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,9 @@ public class StatusApiController {
 
     @Autowired
     FriendRequestService friendRequestService;
+
+    @Autowired
+    StatusLikeService statusLikeService;
 
     @PostMapping("api/{id}/create-status")
     public HttpResponse create(@RequestBody @Validated Status status, @PathVariable Long id) {
@@ -67,7 +73,7 @@ public class StatusApiController {
     }
 
     @GetMapping("/api/newfeed/{current_id}")
-    public List<Status> getNewFeed(@PathVariable Long current_id) {
+    public List<Status> getNewFeedSimple(@PathVariable Long current_id) {
         List<Status> newFeedList = statusService.getNewFeed(current_id);
         return newFeedList;
     }
@@ -83,5 +89,19 @@ public class StatusApiController {
         List<Account> accountList = accountService.getAllAccountLikedThisStatus(status_id);
         return accountList;
     }
+
+    @GetMapping("/api/newfeed2/{current_id}")
+    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id){
+        List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
+        List<Status> statusList = statusService.getNewFeed(current_id);
+        for(Status status: statusList){
+            NewFeedResponse newFeedResponse = new NewFeedResponse();
+            newFeedResponse.setLike(statusLikeService.isLike(current_id, status.getId()));
+            newFeedResponse.setStatus(status);
+            newFeedResponseList.add(newFeedResponse);
+        }
+        return newFeedResponseList;
+    }
+
 
 }
