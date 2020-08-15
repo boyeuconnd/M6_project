@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StatusLikeRepositories extends CrudRepository<StatusLike, Long> {
+    StatusLike findByAccountIdAndStatusId(Long account_id, Long status_id);
 
 }

@@ -1,7 +1,9 @@
 package com.nancy.m6project.service.impl;
 
 import com.nancy.m6project.model.status.StatusLike;
+import com.nancy.m6project.repositories.account.AccountRepositories;
 import com.nancy.m6project.repositories.like.StatusLikeRepositories;
+import com.nancy.m6project.repositories.status.StatusRepositoties;
 import com.nancy.m6project.service.like.StatusLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,12 @@ import java.util.List;
 public class StatusLikeServiceImpl implements StatusLikeService {
     @Autowired
     private StatusLikeRepositories statusLikeRepositories;
+
+    @Autowired
+    private StatusRepositoties statusRepositoties;
+
+    @Autowired
+    private AccountRepositories accountRepositories;
 
     @Override
     public List<StatusLike> findAll() {
@@ -52,5 +60,15 @@ public class StatusLikeServiceImpl implements StatusLikeService {
         statusLikeRepositories.deleteById(id);
         StatusLike statusLike = statusLikeRepositories.findById(id).orElse(null);
         return statusLike == null;
+    }
+
+    @Override
+    public boolean isLike(Long account_id, Long status_id) {
+        StatusLike statusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id, status_id);
+        if(statusLike != null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }
