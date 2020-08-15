@@ -25,7 +25,7 @@ public class CommentApiController {
         commentService.save(comment);
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
-    @GetMapping("api/comment-getAll/{id}")
+    @GetMapping("api/get-comments/{id}")
     public Iterable<Comment> getAllCommentByStatusID(@PathVariable Long id){
         Iterable<Comment> commentList = commentService.findCommentByStatusIdOrderByCreatedDateAsc(id);
         return commentList;
