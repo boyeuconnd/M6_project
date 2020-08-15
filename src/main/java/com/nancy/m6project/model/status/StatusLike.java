@@ -16,8 +16,6 @@ public class StatusLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Boolean isStatusLike = false;
-
     @Column(name = "created_date", nullable = false)
     private Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
 
