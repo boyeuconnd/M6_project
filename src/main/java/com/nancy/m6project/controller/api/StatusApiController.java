@@ -84,4 +84,9 @@ public class StatusApiController {
         return accountList;
     }
 
+    @GetMapping("/api/get-one-status/{id}")
+    public Status getOneStatus(@PathVariable Long id){
+        return statusService.findOne(id);
+    }
+
 }
