@@ -83,7 +83,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     @Override
     public String checkRelation(Long currentId, Long checkId) {
         FriendRequest friendRequest = friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(currentId, checkId);
-        FriendRequest friendRequestReverse = friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(checkId,currentId);
+        FriendRequest friendRequestReverse = friendRequestRepositories.findFriendRequestByAccountSendIdAndAccountReceiveId(checkId, currentId);
         String relation = "";
         if (friendRequest == null && friendRequestReverse == null) {
             relation = "none";
@@ -93,7 +93,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                 relation = "pending";
             }
             if (friendRequestReverse.getStatus() == 1) {
-                relation="friend";
+                relation = "friend";
             }
         }
         if (friendRequest != null && friendRequestReverse == null) {
@@ -105,5 +105,15 @@ public class FriendRequestServiceImpl implements FriendRequestService {
             }
         }
         return relation;
+    }
+
+    @Override
+    public boolean checkHaveFriend(Long accountId) {
+        List<FriendRequest> friendRequestList = friendRequestRepositories.findAllByAccountSendIdAndStatusOrAccountReceiveIdAndStatus(accountId,1, accountId, 1);
+        if (friendRequestList.size() != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

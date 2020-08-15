@@ -54,7 +54,7 @@ public class StatusApiController {
 
     @GetMapping("api/statuses/{id}")
     public Iterable<Status> listStatus(@PathVariable Long id) {
-        return  statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
+        return statusService.findStatusByAccount_IdOrderByCreateDateDesc(id);
 
     }
 
@@ -91,15 +91,20 @@ public class StatusApiController {
     }
 
     @GetMapping("/api/get-one-status/{id}")
-    public Status getOneStatus(@PathVariable Long id){
+    public Status getOneStatus(@PathVariable Long id) {
         return statusService.findOne(id);
     }
 
     @GetMapping("/api/newfeed2/{current_id}")
-    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id){
+    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id) {
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
-        List<Status> statusList = statusService.getNewFeed(current_id);
-        for(Status status: statusList){
+        List<Status> statusList;
+        if (friendRequestService.checkHaveFriend(current_id)) {
+            statusList = statusService.getNewFeed(current_id);
+        } else {
+            statusList = statusService.getAllStatusByAccountId(current_id);
+        }
+        for (Status status : statusList) {
             NewFeedResponse newFeedResponse = new NewFeedResponse();
             newFeedResponse.setLike(statusLikeService.isLike(current_id, status.getId()));
             newFeedResponse.setStatus(status);
@@ -107,6 +112,4 @@ public class StatusApiController {
         }
         return newFeedResponseList;
     }
-
-
 }

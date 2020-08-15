@@ -18,4 +18,6 @@ public interface FriendRequestService extends GenericCRUDService<FriendRequest> 
     FriendRequest getFriendRequestByAccountSendIdAndAccountReceiveId(Long accountSendId, Long accountReceiveId);
 
     String checkRelation(Long currentId, Long checkId);
+
+    boolean checkHaveFriend(Long accountId);
 }
