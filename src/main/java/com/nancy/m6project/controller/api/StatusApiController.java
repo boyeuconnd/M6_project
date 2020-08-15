@@ -13,6 +13,8 @@ import com.nancy.m6project.service.friendRequest.FriendRequestService;
 import com.nancy.m6project.service.like.StatusLikeService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.rmi.runtime.NewThreadAction;
@@ -101,6 +103,11 @@ public class StatusApiController {
             newFeedResponseList.add(newFeedResponse);
         }
         return newFeedResponseList;
+    }
+    @PutMapping("api/edit-status")
+    public ResponseEntity<Status> editStatus(@RequestBody Status status){
+        statusService.save(status);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
 
