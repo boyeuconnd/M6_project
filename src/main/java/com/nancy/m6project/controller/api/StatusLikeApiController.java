@@ -24,7 +24,7 @@ public class StatusLikeApiController {
     private AccountService accountService;
 
     @PostMapping("/api/{account_id}/like/{status_id}")
-    private ResultResponse likeStatus(@PathVariable Long account_id, @PathVariable Long status_id) throws SQLIntegrityConstraintViolationException {
+    private ResultResponse likeStatus(@PathVariable Long account_id, @PathVariable Long status_id) {
         ResultResponse resultResponse = new ResultResponse();
         try {
             StatusLike statusLike = new StatusLike();
@@ -35,6 +35,23 @@ public class StatusLikeApiController {
             statusLike.setAccount(account);
             statusLike.setStatus(status);
             statusLikeService.save(statusLike);
+            resultResponse.setMessage("success");
+
+        } catch (Exception e) {
+            resultResponse.setMessage("fail");
+        }
+        return resultResponse;
+    }
+
+    @DeleteMapping("/api/{statusLike_id}/unlike")
+    private ResultResponse unlikeStatus(@PathVariable Long statusLike_id) {
+        ResultResponse resultResponse = new ResultResponse();
+        try {
+            StatusLike statusLike = statusLikeService.findById(statusLike_id);
+            Status status = statusLike.getStatus();
+            status.setTotalLikes(status.getTotalLikes() - 1);
+            statusService.save(status);
+            statusLikeService.delete(statusLike_id);
             resultResponse.setMessage("success");
 
         } catch (Exception e) {

@@ -34,7 +34,7 @@ public class StatusLikeServiceImpl implements StatusLikeService {
 
     @Override
     public StatusLike findById(Long id) {
-        return null;
+        return statusLikeRepositories.findById(id).get();
     }
 
     @Override
@@ -49,6 +49,8 @@ public class StatusLikeServiceImpl implements StatusLikeService {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        statusLikeRepositories.deleteById(id);
+        StatusLike statusLike = statusLikeRepositories.findById(id).orElse(null);
+        return statusLike == null;
     }
 }
