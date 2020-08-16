@@ -7,6 +7,5 @@ import java.util.Set;
 
 public interface CommentService extends GenericCRUDService<Comment> {
     Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id);
-
 }
 

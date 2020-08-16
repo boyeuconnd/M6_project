@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -16,13 +17,12 @@ public class CommentLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private boolean isCommentLike = false;
 
     @Column(name = "created_date", nullable = false)
-    private Timestamp createdDate;
+    private Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "modify_date", nullable = false)
-    private Timestamp modifyDate;
+    private Timestamp modifyDate = Timestamp.valueOf(LocalDateTime.now());
 
     @ManyToOne
     @JoinColumn(name = "comment_id", referencedColumnName = "id", nullable = false)
