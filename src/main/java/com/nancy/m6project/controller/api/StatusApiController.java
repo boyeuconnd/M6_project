@@ -3,6 +3,7 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.img.Img;
 import com.nancy.m6project.model.response.NewFeedResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.comment.Comment;
@@ -92,6 +93,11 @@ public class StatusApiController {
         return accountList;
     }
 
+    @GetMapping("/api/get-one-status/{id}")
+    public Status getOneStatus(@PathVariable Long id){
+        return statusService.findOne(id);
+    }
+
     @GetMapping("/api/newfeed2/{current_id}")
     public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id){
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
@@ -106,9 +112,13 @@ public class StatusApiController {
     }
     @PutMapping("api/edit-status")
     public ResponseEntity<Status> editStatus(@RequestBody Status status){
+        String content = status.getContent();
+        String url_image = status.getImages().get(0).getUrl();
+        List<Img> img = new ArrayList<>();
+        img = status.getImages();
+        status.setImages(img);
         statusService.save(status);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
-
-
 }
