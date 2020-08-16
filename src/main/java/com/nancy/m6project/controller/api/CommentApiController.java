@@ -2,6 +2,7 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -57,5 +59,23 @@ public class CommentApiController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long id){
         commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("api/add-comment/{status_id}")
+    public ResultResponse addComment(@RequestBody Comment comment,
+                                     @PathVariable Long status_id) {
+        ResultResponse response = new ResultResponse();
+        try {
+            comment.setStatus(statusService.findOne(status_id));
+            if(commentService.save(comment)!= null){
+                response.setMessage("success");
+                return response;
+            }else {
+                response.setMessage("fail");
+            }
+        } catch (SQLIntegrityConstraintViolationException throwables) {
+            response.setMessage("Exception");
+        }
+        return response;
     }
 }
