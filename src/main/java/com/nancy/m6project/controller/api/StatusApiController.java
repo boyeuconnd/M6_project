@@ -112,8 +112,6 @@ public class StatusApiController {
     }
     @PutMapping("api/edit-status")
     public ResponseEntity<Status> editStatus(@RequestBody Status status){
-        String content = status.getContent();
-        String url_image = status.getImages().get(0).getUrl();
         List<Img> img = new ArrayList<>();
         img = status.getImages();
         status.setImages(img);

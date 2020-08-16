@@ -26,42 +26,42 @@ public class CommentLikeApiController {
 
     @Autowired
     CommentLikeService commentLikeService;
-
-    @PostMapping("/api/{account_id}/like-comment/{comment_id}")
-    private ResultResponse likeStatus(@PathVariable Long account_id, @PathVariable Long comment_id) {
-        ResultResponse resultResponse = new ResultResponse();
-        try {
-            CommentLike commentLike = new CommentLike();
-            if (commentLikeService.findByAccountIdAndCommentId(account_id,comment_id) == null){
-                Comment comment = commentService.findById(comment_id);
-                Account account = accountService.findOne(account_id);
-                comment.setTotalLikes(comment.getTotalLikes() + 1);
-                commentService.save(comment);
-                commentLike.setAccount(account);
-                commentLike.setComment(comment);
-                commentLikeService.save(commentLike);
-                resultResponse.setMessage("success");
-            }else {
-                resultResponse.setMessage("fail");
-            }
-        } catch (Exception e) {
-            resultResponse.setMessage("fail");
-        }
-        return resultResponse;
-    }
-
-    @DeleteMapping("/api/{account_id}/unlike-comment/{comment_id}")
-    private ResultResponse unLikeStatus2(@PathVariable Long account_id, @PathVariable Long comment_id) {
-        ResultResponse resultResponse = new ResultResponse();
-        try {
-            commentLikeService.deleteByAccount_IdAndComment_Id(account_id,comment_id);
-            resultResponse.setMessage("success");
-            Comment comment = commentService.findById(comment_id);
-            comment.setTotalLikes(comment.getTotalLikes() - 1);
-            commentService.save(comment);
-        } catch (Exception e) {
-            resultResponse.setMessage("fail");
-        }
-        return resultResponse;
-    }
+//
+//    @PostMapping("/api/{account_id}/like-comment/{comment_id}")
+//    private ResultResponse likeStatus(@PathVariable Long account_id, @PathVariable Long comment_id) {
+//        ResultResponse resultResponse = new ResultResponse();
+//        try {
+//            CommentLike commentLike = new CommentLike();
+//            if (commentLikeService.findByAccountIdAndCommentId(account_id,comment_id) == null){
+//                Comment comment = commentService.findById(comment_id);
+//                Account account = accountService.findOne(account_id);
+//                comment.setTotalLikes(comment.getTotalLikes() + 1);
+//                commentService.save(comment);
+//                commentLike.setAccount(account);
+//                commentLike.setComment(comment);
+//                commentLikeService.save(commentLike);
+//                resultResponse.setMessage("success");
+//            }else {
+//                resultResponse.setMessage("fail");
+//            }
+//        } catch (Exception e) {
+//            resultResponse.setMessage("fail");
+//        }
+//        return resultResponse;
+//    }
+//
+//    @DeleteMapping("/api/{account_id}/unlike-comment/{comment_id}")
+//    private ResultResponse unLikeStatus2(@PathVariable Long account_id, @PathVariable Long comment_id) {
+//        ResultResponse resultResponse = new ResultResponse();
+//        try {
+//            commentLikeService.deleteByAccount_IdAndComment_Id(account_id,comment_id);
+//            resultResponse.setMessage("success");
+//            Comment comment = commentService.findById(comment_id);
+//            comment.setTotalLikes(comment.getTotalLikes() - 1);
+//            commentService.save(comment);
+//        } catch (Exception e) {
+//            resultResponse.setMessage("fail");
+//        }
+//        return resultResponse;
+//    }
 }
