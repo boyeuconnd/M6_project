@@ -26,6 +26,8 @@ public class Comment {
     @Column(name = "modify_date", nullable = false)
     private Timestamp modifyDate = Timestamp.valueOf(LocalDateTime.now());
 
+    private Integer totalLikes = 0;
+
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     @JsonIgnore
