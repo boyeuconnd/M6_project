@@ -11,4 +11,6 @@ public interface NotificationService extends GenericCRUDService<Notification> {
     Notification createNotificationByStatusLike(Long accountSendId, Long statusId);
 
     Notification createNotificationByCommentLike(Long accountSendId, Long commentId);
+
+    Notification createNotificationByCommentStatus(Long accountSendId, Long statusId);
 }

@@ -2,6 +2,7 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.response.CommentResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.status.Status;
@@ -9,6 +10,7 @@ import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
 import com.nancy.m6project.service.like.CommentLikeService;
+import com.nancy.m6project.service.notification.NotificationService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,9 @@ public class CommentApiController {
     @Autowired
     CommentLikeService commentLikeService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @PostMapping("api/comment-create/{id}")
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable Long id, Principal principal) throws SQLIntegrityConstraintViolationException {
         Status status = statusService.findOne(id);
@@ -46,6 +51,8 @@ public class CommentApiController {
         comment.setStatus(status);
         if (friendRequestService.checkRelation(account.getId(), status.getAccount().getId()).equals("friend") || account.getId() == status.getAccount().getId()) {
             commentService.save(comment);
+            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),id);
+            notificationService.save(notification);
         }
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }

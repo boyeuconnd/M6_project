@@ -3,11 +3,13 @@ package com.nancy.m6project.service.impl;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.CommentLike;
 import com.nancy.m6project.model.notification.Notification;
+import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.model.status.StatusLike;
 import com.nancy.m6project.repositories.account.AccountRepositories;
 import com.nancy.m6project.repositories.like.CommentLikeRepositories;
 import com.nancy.m6project.repositories.like.StatusLikeRepositories;
 import com.nancy.m6project.repositories.notification.NotificationRepositories;
+import com.nancy.m6project.repositories.status.StatusRepositoties;
 import com.nancy.m6project.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
     private CommentLikeRepositories commentLikeRepositories;
+
+    @Autowired
+    private StatusRepositoties statusRepositoties;
 
     @Override
     public List<Notification> findAll() {
@@ -92,7 +97,19 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = new Notification();
         notification.setAccountSend(accountSend);
         notification.setAccountReceive(accountReceive);
-        notification.setType(accountSend.getName()+" đã thích một bình luận của bạn");
+        notification.setType(accountSend.getName() + " đã thích một bình luận của bạn");
+        return notification;
+    }
+
+    @Override
+    public Notification createNotificationByCommentStatus(Long accountSendId, Long statusId) {
+        Status status = statusRepositoties.findById(statusId).get();
+        Account accountSend = accountRepositories.findById(accountSendId).get();
+        Account accountReceive = status.getAccount();
+        Notification notification = new Notification();
+        notification.setAccountSend(accountSend);
+        notification.setAccountReceive(accountReceive);
+        notification.setType(accountSend.getName()+" đã bình luận trên 1 trạng thái của bạn");
         return notification;
     }
 
