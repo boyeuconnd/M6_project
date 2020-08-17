@@ -35,12 +35,10 @@ public class CommentLikeServiceImpl  implements CommentLikeService {
     }
 
     @Override
-    public CommentLike deleteByAccount_IdAndComment_Id(Long account_id, Long comment_id) {
+    public void deleteByAccount_IdAndComment_Id(Long account_id, Long comment_id) {
         CommentLike commentLike = commentLikeRepositories.findByAccountIdAndCommentId(account_id,comment_id);
         if (commentLike != null){
             commentLikeRepositories.delete(commentLike);
         }
-        return null;
     }
-
 }

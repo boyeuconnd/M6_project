@@ -29,6 +29,10 @@ import java.util.Set;
 @RestController
 public class StatusApiController {
 
+    public static final int PUBLIC = 0;
+    public static final int FRIEND = 1;
+    public static final int PRIVATE = 2;
+
     @Autowired
     AccountService accountService;
 
@@ -100,8 +104,7 @@ public class StatusApiController {
 
     @GetMapping("/api/{status_id}/liked")
     public List<Account> getAllAccountLikedStatus(@PathVariable Long status_id) {
-        List<Account> accountList = accountService.getAllAccountLikedThisStatus(status_id);
-        return accountList;
+        return accountService.getAllAccountLikedThisStatus(status_id);
     }
 
     @GetMapping("/api/get-one-status/{id}")
