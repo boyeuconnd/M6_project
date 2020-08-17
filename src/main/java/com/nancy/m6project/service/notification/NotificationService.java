@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NotificationService extends GenericCRUDService<Notification> {
     List<Notification> getAllByAccountId(Long accountId);
+
+    Notification createNotificationByStatusLike(Long accountSendId, Long statusId);
 }
