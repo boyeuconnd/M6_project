@@ -2,11 +2,13 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.response.CommentResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
+import com.nancy.m6project.service.like.CommentLikeService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Set;
 
 @RestController
 public class CommentApiController {
@@ -31,6 +35,9 @@ public class CommentApiController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    CommentLikeService commentLikeService;
 
     @PostMapping("api/comment-create/{id}")
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable Long id, Principal principal) throws SQLIntegrityConstraintViolationException {
@@ -83,5 +90,18 @@ public class CommentApiController {
             response.setMessage("Exception");
         }
         return response;
+    }
+
+    @GetMapping("/api/response-comment/{status_id}")
+    public java.util.List<CommentResponse> getCommentResponse(@PathVariable Long status_id) {
+        java.util.List<CommentResponse> newCommentResponseList = new ArrayList<>();
+        Set<Comment> commentList = commentService.findCommentByStatusIdOrderByCreatedDateAsc(status_id);
+        for (Comment comment : commentList) {
+            CommentResponse commentResponse = new CommentResponse();
+            commentResponse.setLike(commentLikeService.isLike(status_id, comment.getId()));
+            commentResponse.setComment(comment);
+            newCommentResponseList.add(commentResponse);
+        }
+        return newCommentResponseList;
     }
 }
