@@ -3,6 +3,7 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.img.Img;
 import com.nancy.m6project.model.response.NewFeedResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.comment.Comment;
@@ -10,6 +11,7 @@ import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
+import com.nancy.m6project.service.img.ImgService;
 import com.nancy.m6project.service.like.StatusLikeService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.rmi.runtime.NewThreadAction;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -40,9 +44,20 @@ public class StatusApiController {
     @Autowired
     StatusLikeService statusLikeService;
 
+    @Autowired
+    ImgService imgService;
+
     @PostMapping("api/{id}/create-status")
-    public HttpResponse create(@RequestBody @Validated Status status, @PathVariable Long id) {
+    public HttpResponse create(@RequestBody Status status, @PathVariable Long id) throws SQLIntegrityConstraintViolationException {
+        List<Img> imgList = new ArrayList<>();
         HttpResponse response = new HttpResponse();
+        if(status.getImages() != null){
+            Img img = status.getImages().get(0);
+            imgList.add(imgService.save(img));
+            status.setImages(imgList);
+        }else {
+            status.setImages(null);
+        }
         status.setAccount(this.accountService.findOne(id));
         if (statusService.save(status) != null) {
             response.setMessage("success");
