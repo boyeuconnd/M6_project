@@ -52,7 +52,7 @@ public class CommentApiController {
         comment.setStatus(status);
         if (friendRequestService.checkRelation(account.getId(), status.getAccount().getId()).equals("friend") || account.getId() == status.getAccount().getId()) {
             commentService.save(comment);
-            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),id);
+            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(), id);
             notificationService.save(notification);
         }
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
@@ -87,10 +87,13 @@ public class CommentApiController {
                                      @PathVariable Long status_id) {
         ResultResponse response = new ResultResponse();
         Account account = comment.getAccount();
+        Status status = statusService.findOne(status_id);
         try {
-            comment.setStatus(statusService.findOne(status_id));
+            comment.setStatus(status);
+            status.setTotalComments(status.getTotalComments() + 1);
+            statusService.save(status);
             if (commentService.save(comment) != null) {
-                Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),status_id);
+                Notification notification = notificationService.createNotificationByCommentStatus(account.getId(), status_id);
                 notificationService.save(notification);
                 response.setMessage("success");
                 return response;
@@ -117,7 +120,7 @@ public class CommentApiController {
     }
 
     @GetMapping("/api/{comment_id}/liked")
-    public List<Account> getAllAccountLikedComment(@PathVariable Long comment_id){
+    public List<Account> getAllAccountLikedComment(@PathVariable Long comment_id) {
         return accountService.getAllAccountLikedThisComment(comment_id);
     }
 }
