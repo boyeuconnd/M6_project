@@ -1,9 +1,15 @@
 package com.nancy.m6project.service.impl;
 
 import com.nancy.m6project.model.account.Account;
+import com.nancy.m6project.model.comment.CommentLike;
+import com.nancy.m6project.model.friendRequest.FriendRequest;
 import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.status.Status;
+import com.nancy.m6project.model.status.StatusLike;
 import com.nancy.m6project.repositories.account.AccountRepositories;
+import com.nancy.m6project.repositories.friendRequest.FriendRequestRepositories;
+import com.nancy.m6project.repositories.like.CommentLikeRepositories;
+import com.nancy.m6project.repositories.like.StatusLikeRepositories;
 import com.nancy.m6project.repositories.notification.NotificationRepositories;
 import com.nancy.m6project.repositories.status.StatusRepositoties;
 import com.nancy.m6project.service.notification.NotificationService;
@@ -15,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -26,7 +31,16 @@ public class NotificationServiceImpl implements NotificationService {
     private AccountRepositories accountRepositories;
 
     @Autowired
+    private StatusLikeRepositories statusLikeRepositories;
+
+    @Autowired
+    private CommentLikeRepositories commentLikeRepositories;
+
+    @Autowired
     private StatusRepositoties statusRepositoties;
+
+    @Autowired
+    private FriendRequestRepositories friendRequestRepositories;
 
     @Override
     public List<Notification> findAll() {
@@ -70,16 +84,62 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification createNotificationByStatusLike(Long accountSendId, Long statusId) {
-        Status status = statusRepositoties.findById(statusId).get();
+        StatusLike statusLike = statusLikeRepositories.findByAccountIdAndStatusId(accountSendId, statusId);
         Account accountSend = accountRepositories.findById(accountSendId).get();
-        Account accountReceive = accountRepositories.findById(status.getAccount().getId()).get();
+        Account accountReceive = statusLike.getStatus().getAccount();
         Notification notification = new Notification();
         notification.setAccountSend(accountSend);
         notification.setAccountReceive(accountReceive);
-        notification.setType(accountSend.getName() + " đã like status của bạn");
+        notification.setType(accountSend.getName() + " đã thích một trạng thái của bạn");
         return notification;
     }
 
+    @Override
+    public Notification createNotificationByCommentLike(Long accountSendId, Long commentId) {
+        CommentLike commentLike = commentLikeRepositories.findByAccountIdAndCommentId(accountSendId, commentId);
+        Account accountSend = accountRepositories.findById(accountSendId).get();
+        Account accountReceive = commentLike.getComment().getAccount();
+        Notification notification = new Notification();
+        notification.setAccountSend(accountSend);
+        notification.setAccountReceive(accountReceive);
+        notification.setType(accountSend.getName() + " đã thích một bình luận của bạn");
+        return notification;
+    }
+
+    @Override
+    public Notification createNotificationByCommentStatus(Long accountSendId, Long statusId) {
+        Status status = statusRepositoties.findById(statusId).get();
+        Account accountSend = accountRepositories.findById(accountSendId).get();
+        Account accountReceive = status.getAccount();
+        Notification notification = new Notification();
+        notification.setAccountSend(accountSend);
+        notification.setAccountReceive(accountReceive);
+        notification.setType(accountSend.getName() + " đã bình luận trên 1 trạng thái của bạn");
+        return notification;
+    }
+
+    @Override
+    public Notification createNotificationByFriendRequestToMe(Long accountSendId, Long accountReceiveId) {
+        Account accountSend = accountRepositories.findById(accountSendId).get();
+        Account accountReceive = accountRepositories.findById(accountReceiveId).get();
+        Notification notification = new Notification();
+        notification.setAccountSend(accountSend);
+        notification.setAccountReceive(accountReceive);
+        notification.setType(accountSend.getName() +" gửi cho bạn một yêu cầu kết bạn");
+        return notification;
+    }
+
+    @Override
+    public Notification createNotificationByAcceptFriendRequest(Long friendRequestId) {
+        FriendRequest friendRequest = friendRequestRepositories.findById(friendRequestId).get();
+        Account accountSend = accountRepositories.findById(friendRequest.getAccountSend().getId()).get();
+        Account accountReceive = accountRepositories.findById(friendRequest.getAccountReceive().getId()).get();
+        Notification notification = new Notification();
+        notification.setAccountSend(accountReceive);
+        notification.setAccountReceive(accountSend);
+        notification.setType(accountReceive.getName() + " đã chấp nhận lời mời kết bạn của bạn");
+        return notification;
+    }
 
 
 }
