@@ -79,12 +79,20 @@ public class CommentApiController {
     @DeleteMapping("api/comment-delete/{id}")
     public ResultResponse deleteComment(@PathVariable Long id) {
         ResultResponse resultResponse = new ResultResponse();
+        Comment deleteComment = commentService.findById(id);
+        DecresingTotalComment(deleteComment);
         if(commentService.delete(id)){
             resultResponse.setMessage("success");
             return resultResponse;
         }
         resultResponse.setMessage("fail");
         return resultResponse;
+    }
+
+    private void DecresingTotalComment(Comment deleteComment) {
+        Status status = statusService.findOne(deleteComment.getStatus().getId());
+        status.setTotalComments(status.getTotalComments() -1);
+        statusService.save(status);
     }
 
     @PostMapping("api/add-comment/{status_id}")
@@ -94,9 +102,7 @@ public class CommentApiController {
         Account account = comment.getAccount();
         Status status = statusService.findOne(status_id);
         try {
-            comment.setStatus(status);
-            status.setTotalComments(status.getTotalComments() + 1);
-            statusService.save(status);
+            CreasingTotalComment(comment, status);
             if (commentService.save(comment) != null) {
                 Notification notification = notificationService.createNotificationByCommentStatus(account.getId(), status_id);
                 notificationService.save(notification);
@@ -109,6 +115,12 @@ public class CommentApiController {
             response.setMessage("Exception");
         }
         return response;
+    }
+
+    private void CreasingTotalComment(Comment comment, Status status) {
+        comment.setStatus(status);
+        status.setTotalComments(status.getTotalComments() + 1);
+        statusService.save(status);
     }
 
     @GetMapping("/api/response-comment/{status_id}/{account_id}")
