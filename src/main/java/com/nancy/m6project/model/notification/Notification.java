@@ -17,6 +17,8 @@ public class Notification {
 
     private String type;
 
+    private boolean isSeen = false;
+
     @Column(name = "create_date", nullable = false)
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
