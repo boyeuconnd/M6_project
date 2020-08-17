@@ -31,8 +31,8 @@ public class CommentLikeApiController {
     private ResultResponse likeComment(@PathVariable Long account_id, @PathVariable Long comment_id) {
         ResultResponse resultResponse = new ResultResponse();
         try {
-            CommentLike commentLike = new CommentLike();
             if (commentLikeService.findByAccountIdAndCommentId(account_id, comment_id) == null) {
+                CommentLike commentLike = new CommentLike();
                 Comment comment = commentService.findById(comment_id);
                 Account account = accountService.findOne(account_id);
                 comment.setTotalLikes(comment.getTotalLikes() + 1);
@@ -40,10 +40,8 @@ public class CommentLikeApiController {
                 commentLike.setAccount(account);
                 commentLike.setComment(comment);
                 commentLikeService.save(commentLike);
-                resultResponse.setMessage("success");
-            } else {
-                resultResponse.setMessage("fail");
             }
+            resultResponse.setMessage("success");
         } catch (Exception e) {
             resultResponse.setMessage("fail");
         }
