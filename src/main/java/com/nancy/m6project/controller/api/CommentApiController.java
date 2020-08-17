@@ -76,9 +76,14 @@ public class CommentApiController {
     }
 
     @DeleteMapping("api/comment-delete/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
-        commentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResultResponse deleteComment(@PathVariable Long id) {
+        ResultResponse resultResponse = new ResultResponse();
+        if(commentService.delete(id)){
+            resultResponse.setMessage("success");
+            return resultResponse;
+        }
+        resultResponse.setMessage("fail");
+        return resultResponse;
     }
 
     @PostMapping("api/add-comment/{status_id}")
