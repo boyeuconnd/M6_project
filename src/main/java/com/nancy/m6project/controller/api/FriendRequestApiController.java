@@ -3,9 +3,11 @@ package com.nancy.m6project.controller.api;
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.account.HttpResponse;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.response.RelationResponse;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
+import com.nancy.m6project.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,9 @@ public class FriendRequestApiController {
     @Autowired
     private FriendRequestService friendRequestService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/api/{sent_id}/friend_request/{receive_id}")
     public HttpResponse SendFriendRequest(@PathVariable Long sent_id, @PathVariable Long receive_id) throws SQLIntegrityConstraintViolationException {
         HttpResponse httpResponse = new HttpResponse();
@@ -44,6 +49,8 @@ public class FriendRequestApiController {
 
         if (responseFR != null) {
             httpResponse.setMessage("success");
+            Notification notification = notificationService.createNotificationByFriendRequestToMe(sent_id,receive_id);
+            notificationService.save(notification);
             return httpResponse;
         }
         httpResponse.setMessage("fail");
@@ -58,7 +65,10 @@ public class FriendRequestApiController {
             friendRequest.setStatus(ACCEPT);
             friendRequest.setModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
             friendRequestService.save(friendRequest);
+            Notification notification = notificationService.createNotificationByAcceptFriendRequest(friend_request_id);
+            notificationService.save(notification);
             httpResponse.setMessage("success");
+
         }catch (Exception e){
             httpResponse.setMessage("fail");
         }

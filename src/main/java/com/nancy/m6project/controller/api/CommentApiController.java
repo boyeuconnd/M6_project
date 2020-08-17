@@ -2,6 +2,7 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.response.CommentResponse;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.status.Status;
@@ -9,6 +10,7 @@ import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.comment.CommentService;
 import com.nancy.m6project.service.friendRequest.FriendRequestService;
 import com.nancy.m6project.service.like.CommentLikeService;
+import com.nancy.m6project.service.notification.NotificationService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -39,6 +42,9 @@ public class CommentApiController {
     @Autowired
     CommentLikeService commentLikeService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @PostMapping("api/comment-create/{id}")
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable Long id, Principal principal) throws SQLIntegrityConstraintViolationException {
         Status status = statusService.findOne(id);
@@ -46,6 +52,8 @@ public class CommentApiController {
         comment.setStatus(status);
         if (friendRequestService.checkRelation(account.getId(), status.getAccount().getId()).equals("friend") || account.getId() == status.getAccount().getId()) {
             commentService.save(comment);
+            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),id);
+            notificationService.save(notification);
         }
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
@@ -78,9 +86,12 @@ public class CommentApiController {
     public ResultResponse addComment(@RequestBody Comment comment,
                                      @PathVariable Long status_id) {
         ResultResponse response = new ResultResponse();
+        Account account = comment.getAccount();
         try {
             comment.setStatus(statusService.findOne(status_id));
             if (commentService.save(comment) != null) {
+                Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),status_id);
+                notificationService.save(notification);
                 response.setMessage("success");
                 return response;
             } else {
@@ -104,5 +115,10 @@ public class CommentApiController {
             newCommentResponseList.add(commentResponse);
         }
         return newCommentResponseList;
+    }
+
+    @GetMapping("/api/{comment_id}/liked")
+    public List<Account> getAllAccountLikedComment(@PathVariable Long comment_id){
+        return accountService.getAllAccountLikedThisComment(comment_id);
     }
 }
