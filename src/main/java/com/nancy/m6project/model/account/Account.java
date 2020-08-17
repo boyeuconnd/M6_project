@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nancy.m6project.model.comment.Comment;
 import com.nancy.m6project.model.comment.CommentLike;
 import com.nancy.m6project.model.friendRequest.FriendRequest;
+import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.model.status.StatusLike;
 import lombok.*;
@@ -65,4 +66,8 @@ public class Account {
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     private Set<CommentLike> commentLikes;
+
+    @OneToMany(mappedBy = "accountReceive")
+    @JsonIgnore
+    private Set<Notification> notifications;
 }
