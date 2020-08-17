@@ -29,7 +29,7 @@ public class NotificationApiController {
         Notification notification = notificationService.findById(notification_id);
 
         if (notification == null) {
-            resultResponse.setMessage("thông báo  k có");
+            resultResponse.setMessage("thông báo không tồn tại");
         } else {
             notification.setSeen(true);
             notificationService.save(notification);
