@@ -85,9 +85,12 @@ public class CommentApiController {
     public ResultResponse addComment(@RequestBody Comment comment,
                                      @PathVariable Long status_id) {
         ResultResponse response = new ResultResponse();
+        Account account = comment.getAccount();
         try {
             comment.setStatus(statusService.findOne(status_id));
             if (commentService.save(comment) != null) {
+                Notification notification = notificationService.createNotificationByCommentStatus(account.getId(),status_id);
+                notificationService.save(notification);
                 response.setMessage("success");
                 return response;
             } else {
