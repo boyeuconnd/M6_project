@@ -77,9 +77,14 @@ public class CommentApiController {
     }
 
     @DeleteMapping("api/comment-delete/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
-        commentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResultResponse deleteComment(@PathVariable Long id) {
+        ResultResponse resultResponse = new ResultResponse();
+        if(commentService.delete(id)){
+            resultResponse.setMessage("success");
+            return resultResponse;
+        }
+        resultResponse.setMessage("fail");
+        return resultResponse;
     }
 
     @PostMapping("api/add-comment/{status_id}")
@@ -106,13 +111,14 @@ public class CommentApiController {
         return response;
     }
 
-    @GetMapping("/api/response-comment/{status_id}")
-    public java.util.List<CommentResponse> getCommentResponse(@PathVariable Long status_id) {
+    @GetMapping("/api/response-comment/{status_id}/{account_id}")
+    public java.util.List<CommentResponse> getCommentResponse(@PathVariable("status_id") Long status_id,@PathVariable("account_id") Long account_id ) {
         java.util.List<CommentResponse> newCommentResponseList = new ArrayList<>();
         Set<Comment> commentList = commentService.findCommentByStatusIdOrderByCreatedDateAsc(status_id);
         for (Comment comment : commentList) {
             CommentResponse commentResponse = new CommentResponse();
-            commentResponse.setLike(commentLikeService.isLike(status_id, comment.getId()));
+            boolean isLike = commentLikeService.isLike(account_id, comment.getId());
+            commentResponse.setLike(commentLikeService.isLike(account_id, comment.getId()));
             commentResponse.setComment(comment);
             newCommentResponseList.add(commentResponse);
         }
