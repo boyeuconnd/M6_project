@@ -64,8 +64,13 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     }
 
     @Override
-    public List<Account> getAllAccountLikedThisStatus(Long id) {
-        return accountRepositories.findAllAccountLikedByStatusId(id);
+    public List<Account> getAllAccountLikedThisStatus(Long statusId) {
+        return accountRepositories.findAllAccountLikedByStatusId(statusId);
+    }
+
+    @Override
+    public List<Account> getAllAccountLikedThisComment(Long comment_id) {
+        return accountRepositories.findAllAccountLikedByCommentId(comment_id);
     }
 
 }

@@ -22,5 +22,5 @@ public interface AccountService {
     List<Account> getAllAccountLikedThisStatus(Long id);
 
 
-
+    List<Account> getAllAccountLikedThisComment(Long comment_id);
 }

@@ -100,8 +100,7 @@ public class StatusApiController {
 
     @GetMapping("/api/{status_id}/liked")
     public List<Account> getAllAccountLikedStatus(@PathVariable Long status_id) {
-        List<Account> accountList = accountService.getAllAccountLikedThisStatus(status_id);
-        return accountList;
+        return accountService.getAllAccountLikedThisStatus(status_id);
     }
 
     @GetMapping("/api/get-one-status/{id}")
