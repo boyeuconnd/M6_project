@@ -24,6 +24,8 @@ public class Status {
     @Column(columnDefinition = "text")
     private String content;
 
+    private Integer privacy = 0;
+
     @Column(name = "create_date", nullable = false)
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
 
