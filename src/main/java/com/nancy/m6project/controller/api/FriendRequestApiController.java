@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class FriendRequestApiController {
         try{
             FriendRequest friendRequest = friendRequestService.findById(friend_request_id);
             friendRequest.setStatus(ACCEPT);
+            friendRequest.setModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
             friendRequestService.save(friendRequest);
             httpResponse.setMessage("success");
         }catch (Exception e){
@@ -65,7 +68,6 @@ public class FriendRequestApiController {
     @DeleteMapping("/api/friend_request_response/{friend_request_id}")
     public HttpResponse DeleteFriendRequest(@PathVariable Long friend_request_id) {
         HttpResponse httpResponse = new HttpResponse();
-        FriendRequest friendRequest = friendRequestService.findById(friend_request_id);
         friendRequestService.delete(friend_request_id);
         httpResponse.setMessage("xóa thành công");
         return httpResponse;

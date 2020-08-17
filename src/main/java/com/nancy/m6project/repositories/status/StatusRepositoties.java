@@ -3,9 +3,11 @@ package com.nancy.m6project.repositories.status;
 import com.nancy.m6project.model.status.Status;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface StatusRepositoties extends CrudRepository<Status, Long> {
     Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id);
 

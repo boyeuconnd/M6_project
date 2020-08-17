@@ -77,7 +77,6 @@ public class StatusApiController {
     public ResultResponse deleteStatus(@PathVariable Long id) {
         ResultResponse resultResponse = new ResultResponse();
         try {
-            Status status = statusService.findById(id);
             statusService.delete(id);
             resultResponse.setMessage("xóa thành công");
         } catch (Exception e) {

@@ -15,6 +15,16 @@ public class CommentLikeServiceImpl  implements CommentLikeService {
 
 
     @Override
+    public boolean isLike(Long account_id, Long comment_id) {
+        CommentLike commentLike = commentLikeRepositories.findByAccountIdAndCommentId(account_id,comment_id);
+        if (commentLike != null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
     public CommentLike save(CommentLike commentLike) {
         return commentLikeRepositories.save(commentLike);
     }

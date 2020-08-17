@@ -35,13 +35,13 @@ public class AccountApiController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/account")
-    public Iterable<Account> getAll(){
+    public Iterable<Account> getAll() {
         return accountService.findAll();
     }
 
 
     @PostMapping("/login")
-    public HttpResponse generateToken(@RequestBody AuthRequest authRequest){
+    public HttpResponse generateToken(@RequestBody AuthRequest authRequest) {
         HttpResponse response = new HttpResponse();
         Account resposeAccount = this.accountService.findAccountByEmail(authRequest.getEmail());
         try {
@@ -53,54 +53,55 @@ public class AccountApiController {
             response.setToken(jwtUntil.generateToken(authRequest.getEmail()));
             resposeAccount.setEmail(authRequest.getEmail());
             response.setAccount_id(resposeAccount.getId());
-        }catch(ExpiredJwtException jwtExpired){
+        } catch (ExpiredJwtException jwtExpired) {
             response.setMessage("Phiên làm việc hết hạn");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             response.setMessage("Email hoặc mật khẩu không đúng");
         }
         return response;
     }
 
     @PostMapping("/register")
-    public ResultResponse saveAccount(@RequestBody @Validated Account newAccount){
+    public ResultResponse saveAccount(@RequestBody @Validated Account newAccount) {
         ResultResponse response = new ResultResponse();
         Boolean isAccountExist = this.accountService.existsAccountByEmail(newAccount.getEmail());
-       try {
-           if (!isAccountExist){
-               newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
-               accountService.save(newAccount);
-               response.setMessage("Đăng ký thành công");
-           }else {
-               response.setMessage("Email đã tồn tại !");
-           }
-       }catch (Exception e){
-           response.setMessage("Lỗi email hoặc mật khẩu chưa nhập !");
-       }
+        try {
+            if (!isAccountExist) {
+                newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
+                accountService.save(newAccount);
+                response.setMessage("Đăng ký thành công");
+            } else {
+                response.setMessage("Email đã tồn tại !");
+            }
+        } catch (Exception e) {
+            response.setMessage("Lỗi email hoặc mật khẩu chưa nhập !");
+        }
         return response;
     }
 
     @GetMapping("/api/account-details/{id}")
-    public Account accountDetails(@PathVariable Long id){
+    public Account accountDetails(@PathVariable Long id) {
         Account account = accountService.findOne(id);
         return account;
     }
+
     @PutMapping("api/edit/{id}")
-    public HttpResponse editInfomation(@RequestBody Account account){
+    public HttpResponse editInfomation(@RequestBody Account account) {
         HttpResponse response = new HttpResponse();
         Account editedAccount = accountService.save(account);
-        if(editedAccount != null){
+        if (editedAccount != null) {
             response.setMessage("Success");
-        }else {
+        } else {
             response.setMessage("Fail");
         }
         return response;
     }
+
     @PatchMapping("api/find-list-users")
-    public Iterable<Account> findAllUserByName(@RequestBody String keyword){
+    public Iterable<Account> findAllUserByName(@RequestBody String keyword) {
         Iterable<Account> listResult = accountService.findAllByNameContaining(keyword);
         return listResult;
     }
-
 
 
 }

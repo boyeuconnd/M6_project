@@ -1,11 +1,13 @@
 package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
+import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.response.ResultResponse;
 import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.model.status.StatusLike;
 import com.nancy.m6project.service.account.AccountService;
 import com.nancy.m6project.service.like.StatusLikeService;
+import com.nancy.m6project.service.notification.NotificationService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,9 @@ public class StatusLikeApiController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @PostMapping("/api/{account_id}/like/{status_id}")
     private ResultResponse likeStatus(@PathVariable Long account_id, @PathVariable Long status_id) {
         ResultResponse resultResponse = new ResultResponse();
@@ -35,6 +40,8 @@ public class StatusLikeApiController {
             statusLike.setAccount(account);
             statusLike.setStatus(status);
             statusLikeService.save(statusLike);
+            Notification notification = notificationService.createNotificationByStatusLike(account_id, status_id);
+            notificationService.save(notification);
             resultResponse.setMessage("success");
 
         } catch (Exception e) {
