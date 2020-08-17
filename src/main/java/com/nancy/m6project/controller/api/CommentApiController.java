@@ -24,6 +24,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -113,5 +114,10 @@ public class CommentApiController {
             newCommentResponseList.add(commentResponse);
         }
         return newCommentResponseList;
+    }
+
+    @GetMapping("/api/{comment_id}/liked")
+    public List<Account> getAllAccountLikedComment(@PathVariable Long comment_id){
+        return accountService.getAllAccountLikedThisComment(comment_id);
     }
 }
