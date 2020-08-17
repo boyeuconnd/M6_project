@@ -36,7 +36,7 @@ public class Status {
 
     private Integer totalComments = 0;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Img> images;
 
     @ManyToOne
