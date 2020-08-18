@@ -68,7 +68,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id) {
+    public List<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id) {
         return statusRepositoties.findStatusByAccount_IdOrderByCreateDateDesc(id);
     }
 

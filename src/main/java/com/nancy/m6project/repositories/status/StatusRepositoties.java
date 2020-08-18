@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface StatusRepositoties extends CrudRepository<Status, Long> {
-    Iterable<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id);
+    List<Status> findStatusByAccount_IdOrderByCreateDateDesc(Long id);
 
     Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id);
 
