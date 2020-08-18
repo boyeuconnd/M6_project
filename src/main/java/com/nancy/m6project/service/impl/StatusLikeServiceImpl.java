@@ -1,5 +1,6 @@
 package com.nancy.m6project.service.impl;
 
+import com.nancy.m6project.model.status.Status;
 import com.nancy.m6project.model.status.StatusLike;
 import com.nancy.m6project.repositories.account.AccountRepositories;
 import com.nancy.m6project.repositories.like.StatusLikeRepositories;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +48,7 @@ public class StatusLikeServiceImpl implements StatusLikeService {
     }
 
     @Override
-    public StatusLike save(StatusLike statusLike)  {
+    public StatusLike save(StatusLike statusLike) {
         return statusLikeRepositories.save(statusLike);
     }
 
@@ -62,23 +64,35 @@ public class StatusLikeServiceImpl implements StatusLikeService {
         return statusLike == null;
     }
 
-    @Override
-    public boolean isLike(Long account_id, Long status_id) {
-        StatusLike statusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id, status_id);
-        if(statusLike != null){
-            return true;
-        }else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean isLike(Long account_id, Long status_id) {
+//        StatusLike statusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id, status_id);
+//        if(statusLike != null){
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
 
     @Override
     public StatusLike deleteByAccountIdAndStatusId(Long account_id, Long status_id) {
-        StatusLike deleteStatusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id,status_id);
-        if(deleteStatusLike != null){
+        StatusLike deleteStatusLike = statusLikeRepositories.findByAccountIdAndStatusId(account_id, status_id);
+        if (deleteStatusLike != null) {
             statusLikeRepositories.delete(deleteStatusLike);
             return deleteStatusLike;
         }
         return null;
     }
+
+    @Override
+    public List<Long> getAllStatusLikedIdByAccountId(Long id) {
+        List<StatusLike> statusLikedList = statusLikeRepositories.findAllByAccountId(id);
+        List<Long> statusLikedIdList = new ArrayList<>();
+        for (StatusLike statusLike : statusLikedList) {
+            statusLikedIdList.add(statusLike.getStatus().getId());
+        }
+        return statusLikedIdList;
+    }
+
+
 }

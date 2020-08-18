@@ -57,11 +57,11 @@ public class StatusApiController {
     public HttpResponse create(@RequestBody Status status, @PathVariable Long id) throws SQLIntegrityConstraintViolationException {
         List<Img> imgList = new ArrayList<>();
         HttpResponse response = new HttpResponse();
-        if(status.getImages() != null){
+        if (status.getImages() != null) {
             Img img = status.getImages().get(0);
             imgList.add(imgService.save(img));
             status.setImages(imgList);
-        }else {
+        } else {
             status.setImages(null);
         }
         status.setAccount(this.accountService.findOne(id));
@@ -118,21 +118,26 @@ public class StatusApiController {
     public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id) {
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
         List<Status> statusList;
+
         if (friendRequestService.checkHaveFriend(current_id)) {
             statusList = statusService.getNewFeed(current_id);
         } else {
             statusList = statusService.getAllStatusByAccountId(current_id);
         }
+
+        List<Long> statusLikedId = statusLikeService.getAllStatusLikedIdByAccountId(current_id);
+
         for (Status status : statusList) {
             NewFeedResponse newFeedResponse = new NewFeedResponse();
-            newFeedResponse.setLike(statusLikeService.isLike(current_id, status.getId()));
+            newFeedResponse.setLike(statusLikedId.contains(status.getId()));
             newFeedResponse.setStatus(status);
             newFeedResponseList.add(newFeedResponse);
         }
         return newFeedResponseList;
     }
+
     @PutMapping("api/edit-status")
-    public ResponseEntity<Status> editStatus(@RequestBody Status status){
+    public ResponseEntity<Status> editStatus(@RequestBody Status status) {
         List<Img> img = new ArrayList<>();
         img = status.getImages();
         status.setImages(img);
