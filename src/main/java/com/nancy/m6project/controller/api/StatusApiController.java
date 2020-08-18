@@ -92,9 +92,9 @@ public class StatusApiController {
         return resultResponse;
     }
 
-    @GetMapping("/api/newfeed/{current_id}")
-    public List<Status> getNewFeedSimple(@PathVariable Long current_id) {
-        List<Status> newFeedList = statusService.getNewFeed(current_id);
+    @GetMapping("/api/newfeed/{current_id}/{total_record}")
+    public List<Status> getNewFeedSimple(@PathVariable Long current_id, @PathVariable Integer total_record) {
+        List<Status> newFeedList = statusService.getNewFeed(current_id,total_record);
         return newFeedList;
     }
 
@@ -114,13 +114,13 @@ public class StatusApiController {
         return statusService.findOne(id);
     }
 
-    @GetMapping("/api/newfeed2/{current_id}")
-    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id) {
+    @GetMapping("/api/newfeed2/{current_id}/{total_record}")
+    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id,@PathVariable Integer total_record) {
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
         List<Status> statusList;
 
         if (friendRequestService.checkHaveFriend(current_id)) {
-            statusList = statusService.getNewFeed(current_id);
+            statusList = statusService.getNewFeed(current_id,total_record);
         } else {
             statusList = statusService.getAllStatusByAccountId(current_id);
         }

@@ -14,6 +14,6 @@ public interface StatusService extends GenericCRUDService<Status> {
     List<Status> getAllStatusByAccountId(Long id);
     Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id);
 
-    List<Status> getNewFeed(Long id);
+    List<Status> getNewFeed(Long id,Integer total_record);
 
 }
