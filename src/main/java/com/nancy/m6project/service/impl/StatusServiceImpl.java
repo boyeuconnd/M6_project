@@ -85,7 +85,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public List<Status> getNewFeed(Long id) {
-        return statusRepositoties.getNewFeed(id);
+    public List<Status> getNewFeed(Long id,Integer total_record) {
+        return statusRepositoties.getNewFeed(id,total_record);
     }
 }
