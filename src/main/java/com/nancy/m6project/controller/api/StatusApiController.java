@@ -151,4 +151,25 @@ public class StatusApiController {
         statusService.save(status);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/api/newfeed/update/{current_id}/{total_record}")
+    public List<NewFeedResponse> getUpdateNewFeedResponse(@PathVariable Long current_id,@PathVariable Integer total_record) {
+        List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
+        List<Status> statusList;
+
+        if (friendRequestService.checkHaveFriend(current_id)) {
+            statusList = statusService.updateNewFeed(current_id,total_record);
+        } else {
+            statusList = statusService.getAllStatusByAccountId(current_id);
+        }
+        List<Long> statusLikedId = statusLikeService.getAllStatusLikedIdByAccountId(current_id);
+
+        for (Status status : statusList) {
+            NewFeedResponse newFeedResponse = new NewFeedResponse();
+            newFeedResponse.setLike(statusLikedId.contains(status.getId()));
+            newFeedResponse.setStatus(status);
+            newFeedResponseList.add(newFeedResponse);
+        }
+        return newFeedResponseList;
+    }
 }
