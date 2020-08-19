@@ -32,8 +32,7 @@ import java.util.Set;
 public class StatusApiController {
 
     public static final int PUBLIC = 0;
-    public static final int FRIEND = 1;
-    public static final int PRIVATE = 2;
+    public static final int PRIVATE = 1;
 
     @Autowired
     AccountService accountService;
@@ -102,7 +101,7 @@ public class StatusApiController {
 
     @GetMapping("/api/newfeed/{current_id}/{total_record}")
     public List<Status> getNewFeedSimple(@PathVariable Long current_id, @PathVariable Integer total_record) {
-        List<Status> newFeedList = statusService.getNewFeed(current_id,total_record);
+        List<Status> newFeedList = statusService.getNewFeed(current_id, total_record);
         return newFeedList;
     }
 
@@ -123,14 +122,14 @@ public class StatusApiController {
     }
 
     @GetMapping("/api/newfeed2/{current_id}/{total_record}")
-    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id,@PathVariable Integer total_record) {
+    public List<NewFeedResponse> getNewFeedResponse(@PathVariable Long current_id, @PathVariable Integer total_record) {
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
         List<Status> statusList;
 
         if (friendRequestService.checkHaveFriend(current_id)) {
-            statusList = statusService.getNewFeed(current_id,total_record);
+            statusList = statusService.getNewFeed(current_id, total_record);
         } else {
-            statusList = statusService.getAllStatusByAccountId(current_id,total_record);
+            statusList = statusService.getAllStatusByAccountId(current_id, total_record);
         }
         List<Long> statusLikedId = statusLikeService.getAllStatusLikedIdByAccountId(current_id);
 
@@ -153,14 +152,14 @@ public class StatusApiController {
     }
 
     @GetMapping("/api/newfeed/update/{current_id}/{total_record}")
-    public List<NewFeedResponse> getUpdateNewFeedResponse(@PathVariable Long current_id,@PathVariable Integer total_record) {
+    public List<NewFeedResponse> getUpdateNewFeedResponse(@PathVariable Long current_id, @PathVariable Integer total_record) {
         List<NewFeedResponse> newFeedResponseList = new ArrayList<>();
         List<Status> statusList;
 
         if (friendRequestService.checkHaveFriend(current_id)) {
-            statusList = statusService.updateNewFeed(current_id,total_record);
+            statusList = statusService.updateNewFeed(current_id, total_record);
         } else {
-            statusList = statusService.getAllStatusByAccountId(current_id,total_record);
+            statusList = statusService.getAllStatusByAccountId(current_id, total_record);
         }
         List<Long> statusLikedId = statusLikeService.getAllStatusLikedIdByAccountId(current_id);
 
@@ -171,5 +170,33 @@ public class StatusApiController {
             newFeedResponseList.add(newFeedResponse);
         }
         return newFeedResponseList;
+    }
+
+    @PutMapping("/api/{status_id}/change-to-public")
+    public ResultResponse changeToPublic(@PathVariable Long status_id) {
+        ResultResponse resultResponse = new ResultResponse();
+        try {
+            Status status = statusService.findById(status_id);
+            status.setPrivacy(PUBLIC);
+            statusService.save(status);
+            resultResponse.setMessage("success");
+        } catch (Exception e) {
+            resultResponse.setMessage("fail");
+        }
+        return resultResponse;
+    }
+
+    @PutMapping("/api/{status_id}/change-to-private")
+    public ResultResponse changeToPrivate(@PathVariable Long status_id) {
+        ResultResponse resultResponse = new ResultResponse();
+        try {
+            Status status = statusService.findById(status_id);
+            status.setPrivacy(PRIVATE);
+            statusService.save(status);
+            resultResponse.setMessage("success");
+        } catch (Exception e) {
+            resultResponse.setMessage("fail");
+        }
+        return resultResponse;
     }
 }

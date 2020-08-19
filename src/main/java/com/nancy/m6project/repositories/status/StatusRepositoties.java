@@ -20,7 +20,7 @@ public interface StatusRepositoties extends CrudRepository<Status, Long> {
 
     @Query(value = "select *\n" +
             "from statuses\n" +
-            "where id in (select distinct statuses.id from statuses left join friend_request\n" +
+            "where privacy = 0 and id in (select distinct statuses.id from statuses left join friend_request\n" +
             "                                                                 on (account_id = account_receive or account_id = account_send)\n" +
             "             where status =1 and (account_send = ?1 or account_receive = ?1)\n" +
             ") order by statuses.create_date desc limit 5 offset ?2", nativeQuery = true)
