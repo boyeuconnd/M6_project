@@ -16,4 +16,6 @@ public interface StatusService extends GenericCRUDService<Status> {
 
     List<Status> getNewFeed(Long id,Integer total_record);
 
+    List<Status> updateNewFeed(Long id, Integer total_record);
+
 }
