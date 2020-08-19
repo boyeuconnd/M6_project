@@ -141,4 +141,9 @@ public class CommentApiController {
     public List<Account> getAllAccountLikedComment(@PathVariable Long comment_id) {
         return accountService.getAllAccountLikedThisComment(comment_id);
     }
+
+    @GetMapping("/api/comment/{comment_id}")
+    public Comment getSingleComment(@PathVariable Long comment_id){
+        return commentService.findById(comment_id);
+    }
 }
