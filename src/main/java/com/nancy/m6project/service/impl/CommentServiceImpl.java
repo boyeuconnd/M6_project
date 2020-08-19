@@ -29,6 +29,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Iterable<Comment> findAllByStatus_Id(Long status_id) {
+        return commentRepository.findAllByStatus_Id(status_id);
+    }
+
+    @Override
+    public void deleteAllCommentByStatus_Id(Iterable<Comment> comments) {
+        for (Comment anComment:comments) {
+            this.delete(anComment.getId());
+        }
+    }
+
+    @Override
     public List findAll() {
         return null;
     }
@@ -65,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
         if(commentLikes != null){
             commentLikeService.deleteAllByCommentId(commentLikes);
         }
-        if( comment != null){
+        if(comment != null){
             commentRepository.delete(comment);
             return true;
         }

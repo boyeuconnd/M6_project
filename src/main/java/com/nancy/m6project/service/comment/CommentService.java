@@ -10,7 +10,9 @@ import java.util.Set;
 public interface CommentService extends GenericCRUDService<Comment> {
     Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id);
 
+    Iterable<Comment> findAllByStatus_Id(Long status_id);
 
+    void deleteAllCommentByStatus_Id(Iterable<Comment> comments);
 
 }
 

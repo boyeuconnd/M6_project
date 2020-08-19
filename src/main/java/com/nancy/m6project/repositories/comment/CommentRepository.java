@@ -9,4 +9,7 @@ import java.util.Set;
 @Repository
 public interface CommentRepository  extends CrudRepository<Comment, Long> {
     Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id);
+
+    Iterable<Comment> findAllByStatus_Id(Long status_id);
+
 }
