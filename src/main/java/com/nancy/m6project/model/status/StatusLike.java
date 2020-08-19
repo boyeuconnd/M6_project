@@ -2,6 +2,7 @@ package com.nancy.m6project.model.status;
 
 import com.nancy.m6project.model.account.Account;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -24,6 +25,7 @@ public class StatusLike {
 
     @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
+//    @EqualsAndHashCode.Exclude
     private Status status;
 
     @ManyToOne

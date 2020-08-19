@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -38,4 +39,8 @@ public class Comment {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     @EqualsAndHashCode.Exclude
     private Account account;
+
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
+//    @ToString.Exclude
+    private Set<CommentLike> commentLikes;
 }
