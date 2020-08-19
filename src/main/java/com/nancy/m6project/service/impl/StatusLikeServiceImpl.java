@@ -94,5 +94,15 @@ public class StatusLikeServiceImpl implements StatusLikeService {
         return statusLikedIdList;
     }
 
+    @Override
+    public Iterable<StatusLike> findAllByStatus_Id(Long status_id) {
+        return statusLikeRepositories.findAllByStatus_Id(status_id);
+    }
+
+    @Override
+    public void deleteAllStatusLikeByStatus_id(Iterable<StatusLike> statusLikes) {
+        statusLikeRepositories.deleteAll(statusLikes);
+    }
+
 
 }

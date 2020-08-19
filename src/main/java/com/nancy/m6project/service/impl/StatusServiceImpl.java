@@ -2,8 +2,10 @@ package com.nancy.m6project.service.impl;
 
 
 import com.nancy.m6project.model.status.Status;
+import com.nancy.m6project.model.status.StatusLike;
 import com.nancy.m6project.repositories.friendRequest.FriendRequestRepositories;
 import com.nancy.m6project.repositories.status.StatusRepositoties;
+import com.nancy.m6project.service.like.StatusLikeService;
 import com.nancy.m6project.service.status.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,9 @@ public class StatusServiceImpl implements StatusService {
 
     @Autowired
     FriendRequestRepositories friendRequestRepositories;
+
+    @Autowired
+    StatusLikeService statusLikeService;
 
 
     @Override
@@ -57,6 +62,10 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public boolean delete(Long id) {
+        Iterable<StatusLike> statusLikes = statusLikeService.findAllByStatus_Id(id);
+        if(statusLikes!= null){
+            this.statusLikeService.deleteAllStatusLikeByStatus_id(statusLikes);
+        }
         statusRepositoties.deleteById(id);
         Status status = statusRepositoties.findById(id).orElse(null);
         return status == null;

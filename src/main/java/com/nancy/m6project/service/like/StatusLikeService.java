@@ -12,5 +12,7 @@ public interface StatusLikeService extends GenericCRUDService<StatusLike> {
 
     List<Long> getAllStatusLikedIdByAccountId(Long id);
 
-    Iterable<StatusLike> findAllByAccount_Id(Long account_id);
+    Iterable<StatusLike> findAllByStatus_Id(Long account_id);
+
+    void deleteAllStatusLikeByStatus_id(Iterable<StatusLike> statusLikes);
 }
