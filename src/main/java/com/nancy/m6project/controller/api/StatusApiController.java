@@ -160,7 +160,7 @@ public class StatusApiController {
         if (friendRequestService.checkHaveFriend(current_id)) {
             statusList = statusService.updateNewFeed(current_id,total_record);
         } else {
-            statusList = statusService.getAllStatusByAccountId(current_id);
+            statusList = statusService.getAllStatusByAccountId(current_id,total_record);
         }
         List<Long> statusLikedId = statusLikeService.getAllStatusLikedIdByAccountId(current_id);
 
