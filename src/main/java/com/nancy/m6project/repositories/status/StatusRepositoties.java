@@ -13,7 +13,10 @@ public interface StatusRepositoties extends CrudRepository<Status, Long> {
 
     Iterable<Status> findAllByContentContainingAndAccount_Id(String keyword, Long id);
 
-    List<Status> findStatusesByAccountId(Long id);
+    @Query(value = "select *\n" +
+            "from statuses where account_id = ?1\n" +
+            "order by statuses.create_date desc limit 5 offset ?2", nativeQuery = true)
+    List<Status> findStatusesByAccountId(Long id, Integer total_record);
 
     @Query(value = "select *\n" +
             "from statuses\n" +

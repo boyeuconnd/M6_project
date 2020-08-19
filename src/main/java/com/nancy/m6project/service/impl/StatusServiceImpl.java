@@ -73,8 +73,8 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public List<Status> getAllStatusByAccountId(Long id) {
-        return statusRepositoties.findStatusesByAccountId(id);
+    public List<Status> getAllStatusByAccountId(Long id, Integer total_record) {
+        return statusRepositoties.findStatusesByAccountId(id, total_record);
     }
 
 
