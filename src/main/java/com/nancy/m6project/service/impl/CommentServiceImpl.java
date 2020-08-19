@@ -1,8 +1,10 @@
 package com.nancy.m6project.service.impl;
 
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.comment.CommentLike;
 import com.nancy.m6project.repositories.comment.CommentRepository;
 import com.nancy.m6project.service.comment.CommentService;
+import com.nancy.m6project.service.like.CommentLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ import java.util.Set;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    CommentLikeService commentLikeService;
 
     @Override
     public Set<Comment> findCommentByStatusIdOrderByCreatedDateAsc(Long id) {
@@ -56,6 +61,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public boolean delete(Long id) {
         Comment comment = findById(id);
+        Iterable<CommentLike> commentLikes = commentLikeService.findAllByComment_Id(id) ;
+        if(commentLikes != null){
+            commentLikeService.deleteAllByCommentId(commentLikes);
+        }
         if( comment != null){
             commentRepository.delete(comment);
             return true;

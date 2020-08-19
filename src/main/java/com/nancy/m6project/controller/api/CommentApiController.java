@@ -2,6 +2,7 @@ package com.nancy.m6project.controller.api;
 
 import com.nancy.m6project.model.account.Account;
 import com.nancy.m6project.model.comment.Comment;
+import com.nancy.m6project.model.comment.CommentLike;
 import com.nancy.m6project.model.notification.Notification;
 import com.nancy.m6project.model.response.CommentResponse;
 import com.nancy.m6project.model.response.ResultResponse;
@@ -45,18 +46,18 @@ public class CommentApiController {
     @Autowired
     NotificationService notificationService;
 
-    @PostMapping("api/comment-create/{id}")
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable Long id, Principal principal) throws SQLIntegrityConstraintViolationException {
-        Status status = statusService.findOne(id);
-        Account account = comment.getAccount();
-        comment.setStatus(status);
-        if (friendRequestService.checkRelation(account.getId(), status.getAccount().getId()).equals("friend") || account.getId() == status.getAccount().getId()) {
-            commentService.save(comment);
-            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(), id);
-            notificationService.save(notification);
-        }
-        return new ResponseEntity<>(comment, HttpStatus.CREATED);
-    }
+//    @PostMapping("api/comment-create/{id}")
+//    public ResponseEntity<Comment> createComment(@RequestBody Comment comment, @PathVariable Long id, Principal principal) throws SQLIntegrityConstraintViolationException {
+//        Status status = statusService.findOne(id);
+//        Account account = comment.getAccount();
+//        comment.setStatus(status);
+//        if (friendRequestService.checkRelation(account.getId(), status.getAccount().getId()).equals("friend") || account.getId() == status.getAccount().getId()) {
+//            commentService.save(comment);
+//            Notification notification = notificationService.createNotificationByCommentStatus(account.getId(), id);
+//            notificationService.save(notification);
+//        }
+//        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+//    }
 
     @GetMapping("api/get-comments/{id}")
     public Iterable<Comment> getAllCommentByStatusID(@PathVariable Long id) {
@@ -79,7 +80,15 @@ public class CommentApiController {
     @DeleteMapping("api/comment-delete/{id}")
     public ResultResponse deleteComment(@PathVariable Long id) {
         ResultResponse resultResponse = new ResultResponse();
+//        Delete all record of this comment_id in comment like table
+//        Iterable<CommentLike> commentLikes = commentLikeService.findAllByComment_Id(id);
+//        if(commentLikes != null){
+//            commentLikeService.deleteAllByCommentId(commentLikes);
+//        }
+
+        // Delete comment
         Comment deleteComment = commentService.findById(id);
+
         DecresingTotalComment(deleteComment);
         if(commentService.delete(id)){
             resultResponse.setMessage("success");
@@ -130,7 +139,7 @@ public class CommentApiController {
         for (Comment comment : commentList) {
             CommentResponse commentResponse = new CommentResponse();
             boolean isLike = commentLikeService.isLike(account_id, comment.getId());
-            commentResponse.setLike(commentLikeService.isLike(account_id, comment.getId()));
+            commentResponse.setLike(isLike);
             commentResponse.setComment(comment);
             newCommentResponseList.add(commentResponse);
         }

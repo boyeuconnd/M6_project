@@ -7,6 +7,8 @@ import com.nancy.m6project.service.like.CommentLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentLikeServiceImpl  implements CommentLikeService {
 
@@ -41,4 +43,16 @@ public class CommentLikeServiceImpl  implements CommentLikeService {
             commentLikeRepositories.delete(commentLike);
         }
     }
+
+    @Override
+    public Iterable<CommentLike> findAllByComment_Id(Long id) {
+        return commentLikeRepositories.findAllByComment_Id(id);
+    }
+
+    @Override
+    public void deleteAllByCommentId(Iterable<CommentLike> commentLikes){
+        commentLikeRepositories.deleteAll(commentLikes);
+    }
+
+
 }

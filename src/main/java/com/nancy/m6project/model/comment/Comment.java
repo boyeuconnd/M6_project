@@ -40,7 +40,4 @@ public class Comment {
     @EqualsAndHashCode.Exclude
     private Account account;
 
-    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
-//    @ToString.Exclude
-    private Set<CommentLike> commentLikes;
 }

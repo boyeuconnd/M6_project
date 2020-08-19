@@ -11,4 +11,6 @@ import java.util.List;
 public interface StatusLikeRepositories extends CrudRepository<StatusLike, Long> {
     StatusLike findByAccountIdAndStatusId(Long account_id, Long status_id);
     List<StatusLike> findAllByAccountId(Long account_id);
+
+    Iterable<StatusLike> findAllByAccount_Id(Long account_id);
 }
