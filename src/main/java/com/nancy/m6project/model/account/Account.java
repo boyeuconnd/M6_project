@@ -22,6 +22,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //@Todo Chuong: Need Validate email
     @Column(nullable = false, unique = true)
     private String email;
 
