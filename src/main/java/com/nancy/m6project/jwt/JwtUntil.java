@@ -17,7 +17,7 @@ public class JwtUntil {
 
 
     //Thời gian có hiệu lực của chuỗi jwt
-    private final long JWT_EXPIRATION = 1000 * 60 * 60 * 4;
+    private final long JWT_EXPIRATION = 4000 * 60 * 60 * 4;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
